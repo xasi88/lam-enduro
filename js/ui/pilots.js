@@ -1,0 +1,61 @@
+// Пилоты: поиск по всем гонкам и страница одного пилота.
+import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=1466f04a";
+import { plate, pilotHref, ICON } from "./parts.js?v=1466f04a";
+import { pilotKey } from "../domain/parse.js?v=1466f04a";
+import { pilotHistory } from "../domain/season.js?v=1466f04a";
+import { LEAGUE } from "../races.js?v=1466f04a";
+
+/** Все пилоты сезона одним списком: лучший класс, очки. */
+function everyone(season) {
+  const m = new Map();
+  for (const c of season) for (const p of c.pilots) {
+    const cur = m.get(p.key);
+    if (!cur || p.points > cur.points) m.set(p.key, { ...p, cls: c });
+  }
+  return [...m.values()].sort((a, b) => a.name.localeCompare(b.name, "ru"));
+}
+
+export function pilotsView(season) {
+  const list = everyone(season);
+  return `<header class="page-head"><div class="wrap"><h1>Пилоты</h1><p class="lede">${list.length} ${plural(list.length, "пилот", "пилота", "пилотов")} в сезоне ${LEAGUE.season}. Найди себя и открой свою страницу.</p>`
+    + `<div class="search"><label for="pq">Поиск</label><div class="search-box">${ICON.search}`
+    + `<input id="pq" type="search" placeholder="Фамилия, имя или село" autocomplete="off" enterkeyhint="search"></div></div></div></header>`
+    + `<section class="band band-tight"><div class="wrap"><ul class="plist" id="plist">`
+    + list.map((p) => `<li data-hay="${esc(pilotKey([p.name, p.village, p.team].join(" ")))}"><a href="${pilotHref(p.name)}">`
+      + `<span class="dot p-${p.cls.id}"></span><span class="pl-who"><b>${esc(p.name)}</b><small>${esc(p.village || "Село не указано")}</small></span>`
+      + `<span class="pts">${p.points}</span></a></li>`).join("")
+    + `</ul><p class="note" id="pnone" hidden>Никого не нашли. Проверь фамилию или село.</p></div></section>`;
+}
+
+export function bindPilots(root) {
+  const q = root.querySelector("#pq");
+  if (!q) return;
+  const items = [...root.querySelectorAll("#plist li")];
+  q.addEventListener("input", () => {
+    const words = q.value.trim().split(/\s+/).filter(Boolean).map(pilotKey);
+    let shown = 0;
+    items.forEach((li) => { const ok = words.every((w) => li.dataset.hay.includes(w)); li.hidden = !ok; shown += ok; });
+    root.querySelector("#pnone").hidden = shown > 0;
+  });
+}
+
+export function pilotView(races, season, key) {
+  const rows = pilotHistory(races, key).sort((a, b) => b.race.date.localeCompare(a.race.date));
+  if (!rows.length) return `<div class="wrap state-box"><p>Такого пилота нет в таблицах.</p><a class="btn btn-ghost" href="#/p">Все пилоты</a></div>`;
+  const r0 = rows[0].rider;
+  const village = rows.map((x) => x.rider.village).find(Boolean);
+  const team = rows.map((x) => x.rider.team).find(Boolean);
+  const stands = season.map((c) => ({ c, p: c.pilots.find((p) => p.key === key) })).filter((x) => x.p);
+  const text = `${r0.name} в сезоне ${LEAGUE.season} лиги «${LEAGUE.name}»: ${stands.map((s) => `${s.c.name}, ${s.p.rank} место, ${s.p.points} ${plural(s.p.points, "очко", "очка", "очков")}`).join("; ")}.`;
+  const share = `https://wa.me/?text=${encodeURIComponent(text + " " + location.href)}`;
+  return `<header class="page-head"><div class="wrap"><a class="back" href="#/p">${ICON.back}Все пилоты</a>`
+    + `<h1>${esc(r0.name)}</h1><p class="lede">${esc([village, team && "Команда " + team].filter(Boolean).join(" · ") || "Село не указано")}</p>`
+    + `<div class="p-stand">` + stands.map(({ c, p }) => `<a class="p-card" href="#/s/${c.id}"><span class="dot p-${c.id}"></span><span>${esc(c.name)}</span>`
+      + `<b>${p.rank} место</b><small>${p.points} ${plural(p.points, "очко", "очка", "очков")} · ${p.starts} ${plural(p.starts, "старт", "старта", "стартов")}</small></a>`).join("") + `</div>`
+    + `<div class="cta"><a class="btn btn-fire" href="${share}" target="_blank" rel="noopener">${ICON.share}Поделиться в WhatsApp</a></div></div></header>`
+    + `<section class="band"><div class="wrap"><h2>Гонки</h2><ol class="proto hist">`
+    + rows.map(({ race, cls, rider: r }) => `<li class="row"><span class="r-place m${r.place ? Math.min(r.place, 4) : 4}">${r.place ?? ""}</span>${plate(r.n, cls.id)}`
+      + `<div class="r-who"><a class="r-name" href="#/g/${race.id}/${cls.id}">${esc(race.name)}</a><span class="r-from">${esc(dateRu(race.date))} · ${esc(cls.name)}</span></div>`
+      + `<div class="r-time">${r.place ? `<b>${dur(r.time)}</b><span class="r-pts">${r.points} ${plural(r.points, "очко", "очка", "очков")}</span>` : `<span class="r-status s-${r.status}">${STATUS[r.status].short}</span>`}</div></li>`).join("")
+    + `</ol></div></section>`;
+}
