@@ -1,9 +1,9 @@
-// Пилоты: поиск по всем гонкам и страница одного пилота.
-import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=1466f04a";
-import { plate, pilotHref, ICON } from "./parts.js?v=1466f04a";
-import { pilotKey } from "../domain/parse.js?v=1466f04a";
-import { pilotHistory } from "../domain/season.js?v=1466f04a";
-import { LEAGUE } from "../races.js?v=1466f04a";
+// Раздел «Профиль»: пилот находит себя и закрепляет. Страница одного пилота.
+import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=9215d078";
+import { plate, pilotHref, ICON } from "./parts.js?v=9215d078";
+import { pilotKey } from "../domain/parse.js?v=9215d078";
+import { pilotHistory } from "../domain/season.js?v=9215d078";
+import { LEAGUE } from "../races.js?v=9215d078";
 
 /** Все пилоты сезона одним списком: лучший класс, очки. */
 function everyone(season) {
@@ -17,8 +17,8 @@ function everyone(season) {
 
 export function pilotsView(season) {
   const list = everyone(season);
-  return `<header class="page-head"><div class="wrap"><h1>Пилоты</h1><p class="lede">${list.length} ${plural(list.length, "пилот", "пилота", "пилотов")} в сезоне ${LEAGUE.season}. Найди себя и открой свою страницу.</p>`
-    + `<div class="search"><label for="pq">Поиск</label><div class="search-box">${ICON.search}`
+  return `<header class="page-head"><div class="wrap"><h1>Профиль</h1><p class="lede">Найди себя в списке и открой свою страницу. Там нажми «Это я»: профиль закрепится на этом телефоне.</p>`
+    + `<div class="search"><label for="pq">Поиск среди ${list.length} ${plural(list.length, "пилота", "пилотов", "пилотов")}</label><div class="search-box">${ICON.search}`
     + `<input id="pq" type="search" placeholder="Фамилия, имя или село" autocomplete="off" enterkeyhint="search"></div></div></div></header>`
     + `<section class="band band-tight"><div class="wrap"><ul class="plist" id="plist">`
     + list.map((p) => `<li data-hay="${esc(pilotKey([p.name, p.village, p.team].join(" ")))}"><a href="${pilotHref(p.name)}">`
@@ -39,20 +39,22 @@ export function bindPilots(root) {
   });
 }
 
-export function pilotView(races, season, key) {
+export function pilotView(races, season, key, mine) {
   const rows = pilotHistory(races, key).sort((a, b) => b.race.date.localeCompare(a.race.date));
-  if (!rows.length) return `<div class="wrap state-box"><p>Такого пилота нет в таблицах.</p><a class="btn btn-ghost" href="#/p">Все пилоты</a></div>`;
+  if (!rows.length) return `<div class="wrap state-box"><p>Такого пилота нет в таблицах.</p><a class="btn btn-ghost" href="#/me">Выбрать себя</a>${mine ? `<button class="btn btn-ghost" type="button" data-unpin>Открепить профиль</button>` : ""}</div>`;
   const r0 = rows[0].rider;
   const village = rows.map((x) => x.rider.village).find(Boolean);
   const team = rows.map((x) => x.rider.team).find(Boolean);
   const stands = season.map((c) => ({ c, p: c.pilots.find((p) => p.key === key) })).filter((x) => x.p);
   const text = `${r0.name} в сезоне ${LEAGUE.season} лиги «${LEAGUE.name}»: ${stands.map((s) => `${s.c.name}, ${s.p.rank} место, ${s.p.points} ${plural(s.p.points, "очко", "очка", "очков")}`).join("; ")}.`;
-  const share = `https://wa.me/?text=${encodeURIComponent(text + " " + location.href)}`;
-  return `<header class="page-head"><div class="wrap"><a class="back" href="#/p">${ICON.back}Все пилоты</a>`
+  const share = `https://wa.me/?text=${encodeURIComponent(text + " " + location.href.split("#")[0] + "#/p/" + encodeURIComponent(key))}`;
+  return `<header class="page-head"><div class="wrap">${mine ? `<p class="eyebrow">Мой профиль</p>` : `<a class="back" href="#/p">${ICON.back}Все пилоты</a>`}`
     + `<h1>${esc(r0.name)}</h1><p class="lede">${esc([village, team && "Команда " + team].filter(Boolean).join(" · ") || "Село не указано")}</p>`
-    + `<div class="p-stand">` + stands.map(({ c, p }) => `<a class="p-card" href="#/s/${c.id}"><span class="dot p-${c.id}"></span><span>${esc(c.name)}</span>`
+    + `<div class="p-stand">` + stands.map(({ c, p }) => `<a class="p-card" href="#/s/${LEAGUE.season}/${c.id}"><span class="dot p-${c.id}"></span><span>${esc(c.name)}</span>`
       + `<b>${p.rank} место</b><small>${p.points} ${plural(p.points, "очко", "очка", "очков")} · ${p.starts} ${plural(p.starts, "старт", "старта", "стартов")}</small></a>`).join("") + `</div>`
-    + `<div class="cta"><a class="btn btn-fire" href="${share}" target="_blank" rel="noopener">${ICON.share}Поделиться в WhatsApp</a></div></div></header>`
+    + `<div class="cta">${mine ? "" : `<button class="btn btn-fire" type="button" data-pin="${esc(key)}" data-name="${esc(r0.name)}">${ICON.user}Это я</button>`}`
+    + `<a class="btn ${mine ? "btn-fire" : "btn-ghost"}" href="${share}" target="_blank" rel="noopener">${ICON.share}Поделиться в WhatsApp</a>`
+    + `${mine ? `<button class="btn btn-ghost" type="button" data-unpin>Сменить пилота</button>` : ""}</div></div></header>`
     + `<section class="band"><div class="wrap"><h2>Гонки</h2><ol class="proto hist">`
     + rows.map(({ race, cls, rider: r }) => `<li class="row"><span class="r-place m${r.place ? Math.min(r.place, 4) : 4}">${r.place ?? ""}</span>${plate(r.n, cls.id)}`
       + `<div class="r-who"><a class="r-name" href="#/g/${race.id}/${cls.id}">${esc(race.name)}</a><span class="r-from">${esc(dateRu(race.date))} · ${esc(cls.name)}</span></div>`

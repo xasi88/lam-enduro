@@ -1,5 +1,5 @@
 // Общая таблица сезона и страница пилота. Чистые функции, без браузера.
-import { pilotKey } from "./parse.js?v=1466f04a";
+import { pilotKey } from "./parse.js?v=9215d078";
 
 /**
  * races: [{ id, name, date, classes: [{ id, name, riders }] }], места уже поставлены.
@@ -59,4 +59,21 @@ export function pilotHistory(races, key) {
     }
   }
   return rows;
+}
+
+/** Сезоны по годам из списка гонок, новый сверху. Пустой список: текущий год лиги. */
+export function seasonsOf(races, fallback) {
+  const years = [...new Set(races.map((r) => r.season).filter(Number.isInteger))].sort((a, b) => b - a);
+  return years.length ? years : [fallback];
+}
+
+/** Гонки по годам, новые сверху: [{ year, races }]. */
+export function racesByYear(races) {
+  const m = new Map();
+  for (const r of [...races].sort((a, b) => b.date.localeCompare(a.date))) {
+    const y = r.season ?? Number(r.date.slice(0, 4));
+    if (!m.has(y)) m.set(y, []);
+    m.get(y).push(r);
+  }
+  return [...m.entries()].sort((a, b) => b[0] - a[0]).map(([year, list]) => ({ year, races: list }));
 }
