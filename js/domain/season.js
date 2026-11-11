@@ -1,5 +1,5 @@
 // Общая таблица сезона и страница пилота. Чистые функции, без браузера.
-import { pilotKey } from "./parse.js?v=9215d078";
+import { pilotKey } from "./parse.js?v=89a1d874";
 
 /**
  * races: [{ id, name, date, classes: [{ id, name, riders }] }], места уже поставлены.
