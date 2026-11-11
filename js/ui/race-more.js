@@ -1,7 +1,7 @@
 // Разделы страницы гонки после итогов: откуда пилоты, команды, трасса, спасибо.
-import { esc } from "./format.js?v=89a1d874";
-import { plate, pilotHref } from "./parts.js?v=89a1d874";
-import { STATUS } from "./format.js?v=89a1d874";
+import { esc } from "./format.js?v=7cf5ea81";
+import { plate, pilotHref } from "./parts.js?v=7cf5ea81";
+import { STATUS } from "./format.js?v=7cf5ea81";
 
 export function villagesOf(d) {
   const m = new Map();

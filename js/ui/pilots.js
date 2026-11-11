@@ -1,9 +1,9 @@
 // Раздел «Профиль»: пилот находит себя и закрепляет. Страница одного пилота.
-import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=89a1d874";
-import { plate, pilotHref, ICON } from "./parts.js?v=89a1d874";
-import { pilotKey } from "../domain/parse.js?v=89a1d874";
-import { pilotHistory } from "../domain/season.js?v=89a1d874";
-import { LEAGUE } from "../races.js?v=89a1d874";
+import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=7cf5ea81";
+import { plate, pilotHref, ICON } from "./parts.js?v=7cf5ea81";
+import { pilotKey } from "../domain/parse.js?v=7cf5ea81";
+import { pilotHistory } from "../domain/season.js?v=7cf5ea81";
+import { LEAGUE } from "../races.js?v=7cf5ea81";
 
 /** Все пилоты сезона одним списком: лучший класс, очки. */
 function everyone(season) {

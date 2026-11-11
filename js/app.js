@@ -3,16 +3,16 @@
 // #/s/<год>/<класс>     сезон              #/me                 мой профиль или выбор себя
 // #/p                   все пилоты         #/p/<ключ>           пилот
 // #/settings            настройки          #/new                что нового
-import { RACES, LEAGUE } from "./races.js?v=89a1d874";
-import { loadAll, loadRace } from "./data.js?v=89a1d874";
-import { seasonTable, seasonsOf } from "./domain/season.js?v=89a1d874";
-import { homeView } from "./ui/home.js?v=89a1d874";
-import { raceView, bindRace } from "./ui/race.js?v=89a1d874";
-import { seasonView } from "./ui/season.js?v=89a1d874";
-import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=89a1d874";
-import { settingsView, newsView } from "./ui/settings.js?v=89a1d874";
-import { loading, failed } from "./ui/parts.js?v=89a1d874";
-import { me, theme } from "./store.js?v=89a1d874";
+import { RACES, LEAGUE } from "./races.js?v=7cf5ea81";
+import { loadAll, loadRace } from "./data.js?v=7cf5ea81";
+import { seasonTable, seasonsOf } from "./domain/season.js?v=7cf5ea81";
+import { homeView } from "./ui/home.js?v=7cf5ea81";
+import { raceView, bindRace } from "./ui/race.js?v=7cf5ea81";
+import { seasonView } from "./ui/season.js?v=7cf5ea81";
+import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=7cf5ea81";
+import { settingsView, newsView } from "./ui/settings.js?v=7cf5ea81";
+import { loading, failed } from "./ui/parts.js?v=7cf5ea81";
+import { me, theme } from "./store.js?v=7cf5ea81";
 
 const app = document.getElementById("app");
 const html = document.documentElement;

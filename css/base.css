@@ -40,8 +40,8 @@ h1 .q{color:var(--fire)}
 .st-soon{background:var(--warn-bg);color:var(--warn-ink);border-color:transparent}
 
 /* Номер как на эндуро-мотоцикле */
-.plate{display:inline-grid;place-items:center;min-width:2.6em;height:1.95em;padding:0 .45em;background:var(--pc,var(--plate-gold));color:var(--plate-ink);border-radius:.35em .35em .85em .85em;font-family:var(--f-display);font-size:15px;line-height:1;box-shadow:inset 0 0 0 2px rgba(0,0,0,.2);flex:none}
-.p-gold{--pc:var(--plate-gold)}.p-silver{--pc:var(--plate-silver)}.p-bronze{--pc:var(--plate-bronze)}
+.plate{display:inline-grid;place-items:center;min-width:2.6em;height:1.95em;padding:0 .45em;background:var(--pc,var(--cls-gold));color:var(--plate-ink);border-radius:.35em .35em .85em .85em;font-family:var(--f-display);font-size:15px;line-height:1;box-shadow:inset 0 0 0 2px rgba(0,0,0,.2);flex:none}
+.p-gold{--pc:var(--cls-gold)}.p-silver{--pc:var(--cls-silver)}.p-bronze{--pc:var(--cls-bronze)}
 .dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--pc);flex:none}
 
 /* Разделы */
@@ -80,9 +80,9 @@ h1 .q{color:var(--fire)}
 .pod-who small{font-size:13px;color:var(--muted);line-height:1.3}
 .pod-time{font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
 .pod-step{display:grid;place-items:center;background:var(--step);border:1px solid var(--line);border-bottom:0;border-radius:12px 12px 0 0;font-family:var(--f-display);font-size:clamp(30px,6vw,44px);line-height:1;transform-origin:bottom;animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
-.pod-1 .pod-step{height:124px;color:var(--plate-gold)}
-.pod-2 .pod-step{height:92px;color:var(--plate-silver);animation-delay:.08s}
-.pod-3 .pod-step{height:70px;color:var(--plate-bronze);animation-delay:.16s}
+.pod-1 .pod-step{height:124px;color:var(--medal-1)}
+.pod-2 .pod-step{height:92px;color:var(--medal-2);animation-delay:.08s}
+.pod-3 .pod-step{height:70px;color:var(--medal-3);animation-delay:.16s}
 @keyframes rise{from{transform:scaleY(.55)}to{transform:none}}
 .podium-base{max-width:760px;height:6px;background:var(--step);border-radius:0 0 4px 4px}
 
