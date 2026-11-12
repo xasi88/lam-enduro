@@ -1,5 +1,6 @@
 // Общая таблица сезона и страница пилота. Чистые функции, без браузера.
-import { pilotKey } from "./parse.js?v=e5947e70";
+import { pilotKey } from "./parse.js?v=8c47f740";
+import { leaguePoints } from "./results.js?v=8c47f740";
 
 /**
  * races: [{ id, name, date, classes: [{ id, name, riders }] }], места уже поставлены.
@@ -92,4 +93,37 @@ export function racesByYear(races) {
     m.get(y).push(r);
   }
   return [...m.entries()].sort((a, b) => b[0] - a[0]).map(([year, list]) => ({ year, races: list }));
+}
+
+/**
+ * Общий зачёт лиги: все классы одним списком по очкам лиги (очки за место × коэффициент класса).
+ * kOf(classId) даёт коэффициент в десятых. cls: класс, где пилот набрал больше очков лиги.
+ * Равные очки: больше побед, потом вторых мест и так далее, как в классе.
+ */
+export function leagueTable(races, kOf) {
+  const m = new Map();
+  for (const race of races) for (const c of race.classes) for (const r of c.riders) {
+    if (!r.name || r.status === "nodata") continue;
+    const key = pilotKey(r.name);
+    if (!m.has(key)) m.set(key, { key, name: r.name, village: r.village, team: r.team, points: 0, starts: 0, places: [], byCls: {} });
+    const p = m.get(key);
+    p.village = r.village || p.village;
+    p.team = r.team || p.team;
+    if (r.status !== "dns") p.starts += 1;
+    const pts = leaguePoints(r.points, kOf(c.id));
+    p.points += pts;
+    p.byCls[c.id] = (p.byCls[c.id] ?? 0) + pts;
+    if (r.place) p.places.push(r.place);
+  }
+  const list = [...m.values()].filter((p) => p.starts > 0);
+  for (const p of list) {
+    p.places.sort((a, b) => a - b);
+    p.cls = Object.entries(p.byCls).sort((a, b) => b[1] - a[1])[0][0];
+  }
+  list.sort((a, b) => b.points - a.points || cmpPlaces(a.places, b.places) || a.name.localeCompare(b.name, "ru"));
+  list.forEach((p, i) => {
+    const prev = list[i - 1];
+    p.rank = prev && prev.points === p.points && cmpPlaces(prev.places, p.places) === 0 ? prev.rank : i + 1;
+  });
+  return list;
 }

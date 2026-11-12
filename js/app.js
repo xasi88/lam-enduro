@@ -5,20 +5,20 @@
 // #/vs/<ключ>           выбор соперника    #/vs/<ключ>/<ключ2>  сравнение двух пилотов
 // #/settings            настройки          #/new                что нового
 // #/rules               регламент
-import { RACES, LEAGUE } from "./races.js?v=e5947e70";
-import { loadAll, loadRace } from "./data.js?v=e5947e70";
-import { seasonTable, seasonsOf } from "./domain/season.js?v=e5947e70";
-import { homeView } from "./ui/home.js?v=e5947e70";
-import { raceView, bindRace } from "./ui/race.js?v=e5947e70";
-import { seasonView } from "./ui/season.js?v=e5947e70";
-import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=e5947e70";
-import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=e5947e70";
-import { pickView, compareView } from "./ui/skills.js?v=e5947e70";
-import { rulesView } from "./ui/rules.js?v=e5947e70";
-import { loading, failed } from "./ui/parts.js?v=e5947e70";
-import { me, theme } from "./store.js?v=e5947e70";
-import { install } from "./install.js?v=e5947e70";
-import { watchMotion } from "./ui/motion.js?v=e5947e70";
+import { RACES, LEAGUE, classK } from "./races.js?v=8c47f740";
+import { loadAll, loadRace } from "./data.js?v=8c47f740";
+import { seasonTable, seasonsOf, leagueTable } from "./domain/season.js?v=8c47f740";
+import { homeView } from "./ui/home.js?v=8c47f740";
+import { raceView, bindRace } from "./ui/race.js?v=8c47f740";
+import { seasonView } from "./ui/season.js?v=8c47f740";
+import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=8c47f740";
+import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=8c47f740";
+import { pickView, compareView } from "./ui/skills.js?v=8c47f740";
+import { rulesView } from "./ui/rules.js?v=8c47f740";
+import { loading, failed } from "./ui/parts.js?v=8c47f740";
+import { me, theme } from "./store.js?v=8c47f740";
+import { install } from "./install.js?v=8c47f740";
+import { watchMotion } from "./ui/motion.js?v=8c47f740";
 
 const app = document.getElementById("app");
 const html = document.documentElement;
@@ -90,7 +90,7 @@ async function route() {
         const isYear = /^\d{4}$/.test(a);
         const year = isYear && years.includes(Number(a)) ? Number(a) : (years.includes(LEAGUE.season) ? LEAGUE.season : years[0]);
         const list = seasonRaces(all, year);
-        app.innerHTML = seasonView({ season: seasonTable(list), clsId: isYear ? b : a, year, years, raceCount: list.length });
+        app.innerHTML = seasonView({ season: seasonTable(list), league: leagueTable(list, classK), clsId: isYear ? b : a, year, years, raceCount: list.length });
         setTitle(`Сезон ${year}`);
         return;
       }

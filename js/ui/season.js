@@ -1,7 +1,11 @@
 // Раздел «Сезон»: выбор сезона, класс, подиум по очкам, таблица остальных.
-import { esc, plural } from "./format.js?v=e5947e70";
-import { classTabs, pilotHref } from "./parts.js?v=e5947e70";
-import { POINTS } from "../domain/results.js?v=e5947e70";
+import { esc, plural } from "./format.js?v=8c47f740";
+import { classTabs, pilotHref } from "./parts.js?v=8c47f740";
+import { POINTS } from "../domain/results.js?v=8c47f740";
+import { CLASSES } from "../races.js?v=8c47f740";
+
+export const LEAGUE_TAB = "league";
+const kText = () => CLASSES.map((c) => `${c.name} ×${String(c.k / 10).replace(".", ",")}`).join(", ");
 
 function seasonPodium(top) {
   if (!top.length) return "";
@@ -13,13 +17,15 @@ function seasonPodium(top) {
 }
 
 const row = (p, max) => `<li class="st-row"><span class="r-place m${Math.min(p.rank, 4)}">${p.rank}</span>`
-  + `<div class="st-who"><a class="r-name" href="${pilotHref(p.name)}">${esc(p.name)}</a>`
+  + `<div class="st-who"><a class="r-name" href="${pilotHref(p.name)}">${p.cls ? `<span class="dot p-${esc(p.cls)}"></span>` : ""}${esc(p.name)}</a>`
   + `<small>${esc([p.village, p.team && "Команда " + p.team, `${p.starts} ${plural(p.starts, "старт", "старта", "стартов")}`].filter(Boolean).join(" · "))}</small></div>`
   + `<span class="st-bar"><i style="width:${Math.max(2, (p.points / max) * 100)}%"></i></span>`
   + `<b class="pts"><span data-roll>${p.points}</span></b></li>`;
 
-export function seasonView({ season, clsId, year, years, raceCount }) {
-  const c = season.find((x) => x.id === clsId) || season[0];
+export function seasonView({ season, league, clsId, year, years, raceCount }) {
+  const tabs = league?.length ? [...season, { id: LEAGUE_TAB, name: "Вся лига", pilots: league }] : season;
+  const c = tabs.find((x) => x.id === clsId) || season[0];
+  const isLeague = c?.id === LEAGUE_TAB;
   const pick = `<nav class="seasons" aria-label="Сезон">` + years.map((y) =>
     `<a class="pill" href="#/s/${y}/${c ? c.id : ""}"${y === year ? ' aria-current="page"' : ""}>Сезон ${y}</a>`).join("") + `</nav>`;
   const head = `<header class="page-head"><div class="wrap">${pick}<h1>Сезон ${year}</h1>`
@@ -28,10 +34,11 @@ export function seasonView({ season, clsId, year, years, raceCount }) {
   const max = c.pilots[0]?.points || 1;
   const top = c.pilots.slice(0, 3), rest = c.pilots.slice(3);
   return head + `<section class="band band-tight"><div class="wrap">`
-    + classTabs(season, c.id, (x) => `#/s/${year}/${x.id}`, (x) => `${x.pilots.length} ${plural(x.pilots.length, "пилот", "пилота", "пилотов")}`)
+    + classTabs(tabs, c.id, (x) => `#/s/${year}/${x.id}`, (x) => `${x.pilots.length} ${plural(x.pilots.length, "пилот", "пилота", "пилотов")}`)
     + (c.pilots.length ? seasonPodium(top)
       + (rest.length ? `<h2 class="proto-title">Все участники</h2><ol class="stand">${rest.map((p) => row(p, max)).join("")}</ol>` : "")
       : `<p class="note">В этом классе пока нет пилотов.</p>`)
+    + (isLeague ? `<p class="note">Вся лига: все классы одним списком. Очки лиги: очки за место × коэффициент класса (${esc(kText())}). Точка у имени: класс, где пилот набрал больше очков.</p>` : "")
     + `<p class="note">Равные очки: выше тот, у кого лучше места в гонках. Нашёл ошибку в имени? Скажи организатору.</p>`
     + `</div></section>`;
 }

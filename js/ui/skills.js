@@ -1,9 +1,11 @@
 // Паутинка сторон пилота и экран сравнения двух пилотов. Расчёт: js/domain/skills.js
-import { esc, dateRu, STATUS } from "./format.js?v=e5947e70";
-import { ICON } from "./parts.js?v=e5947e70";
-import { pilotKey } from "../domain/parse.js?v=e5947e70";
-import { SIDES, classSkills, pilotSkills, headToHead, better } from "../domain/skills.js?v=e5947e70";
-import { LEAGUE } from "../races.js?v=e5947e70";
+import { esc, dateRu, dur, plural, STATUS } from "./format.js?v=8c47f740";
+import { ICON } from "./parts.js?v=8c47f740";
+import { pilotKey } from "../domain/parse.js?v=8c47f740";
+import { SIDES, classSkills, pilotSkills, headToHead } from "../domain/skills.js?v=8c47f740";
+import { LEAGUE, CLASSES, classK } from "../races.js?v=8c47f740";
+import { FACT_GROUPS, pilotFacts, factWinner, tally } from "../domain/compare.js?v=8c47f740";
+import { leagueTable } from "../domain/season.js?v=8c47f740";
 
 const W = 340, H = 300, CX = 170, CY = 150, R = 84;
 const pt = (i, f) => {
@@ -104,13 +106,18 @@ export function compareView(races, season, a, b) {
     + `<a class="link-btn" href="#/vs/${encodeURIComponent(side === "a" ? b : a)}">Сменить</a></div>`;
   const line = (name, ta, tb, win) => `<li class="vs-row"><span class="vs-a${win === "a" ? " vs-win" : ""}">${esc(ta)}</span>`
     + `<span class="vs-name">${esc(name)}</span><span class="vs-b${win === "b" ? " vs-win" : ""}">${esc(tb)}</span></li>`;
-  const num = (x, y) => (x == null || y == null || x === y ? null : x > y ? "a" : "b");
-  const rows = [
-    line("Очки сезона", String(sa?.points ?? 0), String(sb?.points ?? 0), num(sa?.points ?? 0, sb?.points ?? 0)),
-    line("Финиши", `${A.fins} из ${A.starts}`, `${B.fins} из ${B.starts}`, num(A.fins, B.fins)),
-    ...SIDES.map((s, i) => line(s.name, A.sides[i].text, B.sides[i].text, better(s, A.sides[i].value, B.sides[i].value))),
-  ].join("");
-  const diff = A.clsId !== B.clsId ? `<p class="note">Пилоты в разных классах. Паутинка каждого считается по его классу.</p>` : "";
+  const FA = pilotFacts(list, a, classK), FB = pilotFacts(list, b, classK);
+  const lg = leagueTable(list, classK);
+  const la = lg.find((p) => p.key === a), lb = lg.find((p) => p.key === b);
+  const low = (x, y) => (x == null || y == null || x === y ? null : x < y ? "a" : "b");
+  const rows = FACT_GROUPS.map((g, gi) => `<li class="vs-group">${esc(g.name)}</li>`
+    + (gi === 0 ? line("Место в лиге", la ? `${la.rank} из ${lg.length}` : "-", lb ? `${lb.rank} из ${lg.length}` : "-", low(la?.rank, lb?.rank))
+      + line("Место в классе", sa ? `${sa.rank} · ${sa.points} оч.` : "-", sb ? `${sb.rank} · ${sb.points} оч.` : "-", A.clsId === B.clsId ? low(sa?.rank, sb?.rank) : null) : "")
+    + g.rows.map((row) => line(row.name, factText(row, FA), factText(row, FB), factWinner(row, FA.values[row.id], FB.values[row.id]))).join("")).join("");
+  const t = tally(FA, FB);
+  const score = t.n ? `<p class="vs-tally">Лучше в строках: <b class="vs-a">${t.a}</b> : <b class="vs-b">${t.b}</b> из ${t.n}</p>` : "";
+  const kText = CLASSES.map((c) => `${c.name} ×${String(c.k / 10).replace(".", ",")}`).join(", ");
+  const diff = `<p class="note">${A.clsId !== B.clsId ? "Пилоты в разных классах. Паутинка каждого считается по его классу. " : ""}Очки лиги: очки за место × коэффициент класса (${esc(kText)}).</p>`;
   const meets = h.meets.length
     ? `<p class="vs-score"><b class="vs-a">${h.a}</b><span>:</span><b class="vs-b">${h.b}</b></p>`
       + `<ol class="vs-list">` + h.meets.map((m) => `<li class="vs-meet"><div class="r-who"><a class="r-name" href="#/g/${m.race.id}/${m.cls.id}">${esc(m.race.name)}</a>`
@@ -120,9 +127,35 @@ export function compareView(races, season, a, b) {
   return `<header class="page-head"><div class="wrap"><a class="back" href="#/p/${encodeURIComponent(a)}">${ICON.back}${esc(A.name)}</a><h1>Сравнение</h1>`
     + `<div class="vs-top">${head(A, sa, "a")}<a class="vs-swap" href="#/vs/${encodeURIComponent(b)}/${encodeURIComponent(a)}" aria-label="Поменять местами">vs</a>${head(B, sb, "b")}</div></div></header>`
     + `<section class="band band-tight"><div class="wrap vs-grid">`
-    + `<div class="sk-fig">${A.shown || B.shown ? radar([{ sides: A.sides, cls: "rd-a" }, { sides: B.sides, cls: "rd-b" }], false) : `<p class="note">Паутинка появится после финиша в гонке сезона.</p>`}${diff}</div>`
-    + `<div><ul class="vs-list">${rows}</ul></div></div></section>`
+    + `<div class="sk-fig">${A.shown || B.shown ? radar([{ sides: A.sides, cls: "rd-a" }, { sides: B.sides, cls: "rd-b" }], false) : `<p class="note">Паутинка появится после финиша в гонке сезона.</p>`}</div>`
+    + `<div>${score}<ul class="vs-list">${rows}</ul>${diff}</div></div></section>`
     + `<section class="band band-tight"><div class="wrap"><h2>Личные встречи</h2>${meets}</div></section>`;
+}
+
+const n1 = (x) => String(x).replace(".", ",");
+
+/** Подпись значения в строке сравнения. Нет значения: сколько гонок нужно. */
+function factText(row, F) {
+  const v = F.values[row.id];
+  if (v == null) {
+    if (row.need?.fins && F.fins < row.need.fins) return row.need.fins === 1 ? "нет финиша" : `нужно ${row.need.fins} ${plural(row.need.fins, "финиш", "финиша", "финишей")}`;
+    if (row.need?.starts) return `нужно ${row.need.starts} ${plural(row.need.starts, "гонка", "гонки", "гонок")}`;
+    return "-";
+  }
+  switch (row.id) {
+    case "perStart": return n1(v);
+    case "best": return `${v} место`;
+    case "avgPlace": return `${n1(v)} место`;
+    case "beat": return `${v}%`;
+    case "gapTime": return v === 0 ? "победитель" : `+${dur(v)}`;
+    case "gapPct": case "bestPct": return v === 0 ? "лучшее время" : `+${n1(v)}%`;
+    case "finRate": return `${F.fins} из ${F.starts}`;
+    case "penMin": return v ? `${v} мин` : "нет";
+    case "progress": return v === 0 ? "то же место" : `${v > 0 ? "+" : ""}${v} ${plural(Math.abs(v), "место", "места", "мест")}`;
+    case "steady": return `разброс ${n1(v)}%`;
+    case "form": return `${v} оч. за 3`;
+    default: return String(v);
+  }
 }
 
 function res(r) {

@@ -1,9 +1,9 @@
 // Регламент лиги. Новый пункт: дописать в RULES, раздел или строку. Порядок как на экране.
 // Источник правил: docs/Спецификация.md. Новое правило сначала согласовать с организатором.
-import { esc } from "./format.js?v=e5947e70";
-import { ICON } from "./parts.js?v=e5947e70";
-import { POINTS } from "../domain/results.js?v=e5947e70";
-import { CLASSES, LEAGUE } from "../races.js?v=e5947e70";
+import { esc } from "./format.js?v=8c47f740";
+import { ICON } from "./parts.js?v=8c47f740";
+import { POINTS, leaguePoints } from "../domain/results.js?v=8c47f740";
+import { CLASSES, LEAGUE } from "../races.js?v=8c47f740";
 
 export const RULES_UPDATED = "2026-11-12";
 
@@ -30,6 +30,14 @@ export const RULES = [
       `За место в классе: ${POINTS.slice(0, 7).join(", ")} и дальше на 1 меньше, до 1 очка за ${POINTS.length} место.`,
       "Очки всех гонок сезона складываются в общей таблице класса.",
       "Равные очки: выше тот, у кого больше побед, потом больше вторых мест и так далее.",
+    ],
+  },
+  {
+    title: "Очки лиги",
+    items: [
+      `Класс сложнее, очки дороже. Очки лиги: очки за место × коэффициент класса: ${CLASSES.map((c) => `${c.name} ×${String(c.k / 10).replace(".", ",")}`).join(", ")}.`,
+      `Округление до целого, половина вверх. Пример: 1 место в классе ${CLASSES[0].name}: ${POINTS[0]} × ${String(CLASSES[0].k / 10).replace(".", ",")} = ${leaguePoints(POINTS[0], CLASSES[0].k)} очков лиги.`,
+      "Очки лиги складываются в таблице «Вся лига» раздела «Сезон» и в сравнении пилотов. Таблицы классов считают обычные очки.",
     ],
   },
   {

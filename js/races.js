@@ -5,11 +5,14 @@
 
 export const LEAGUE = { name: "Лам Эндуро", season: 2026 };
 
+// k: коэффициент класса для очков лиги, в десятых (15 значит ×1,5). Решение автора 2026-11-12.
+// Новый класс без k считается как ×1.
 export const CLASSES = [
-  { id: "gold", name: "Золото" },
-  { id: "silver", name: "Серебро" },
-  { id: "bronze", name: "Бронза" },
+  { id: "gold", name: "Золото", k: 15 },
+  { id: "silver", name: "Серебро", k: 12 },
+  { id: "bronze", name: "Бронза", k: 10 },
 ];
+export const classK = (id) => CLASSES.find((c) => c.id === id)?.k ?? 10;
 
 export const RACES = [
   {
