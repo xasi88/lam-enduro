@@ -4,18 +4,20 @@
 // #/p                   все пилоты         #/p/<ключ>           пилот
 // #/vs/<ключ>           выбор соперника    #/vs/<ключ>/<ключ2>  сравнение двух пилотов
 // #/settings            настройки          #/new                что нового
-import { RACES, LEAGUE } from "./races.js?v=880737b2";
-import { loadAll, loadRace } from "./data.js?v=880737b2";
-import { seasonTable, seasonsOf } from "./domain/season.js?v=880737b2";
-import { homeView } from "./ui/home.js?v=880737b2";
-import { raceView, bindRace } from "./ui/race.js?v=880737b2";
-import { seasonView } from "./ui/season.js?v=880737b2";
-import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=880737b2";
-import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=880737b2";
-import { pickView, compareView } from "./ui/skills.js?v=880737b2";
-import { loading, failed } from "./ui/parts.js?v=880737b2";
-import { me, theme } from "./store.js?v=880737b2";
-import { install } from "./install.js?v=880737b2";
+// #/rules               регламент
+import { RACES, LEAGUE } from "./races.js?v=09914de0";
+import { loadAll, loadRace } from "./data.js?v=09914de0";
+import { seasonTable, seasonsOf } from "./domain/season.js?v=09914de0";
+import { homeView } from "./ui/home.js?v=09914de0";
+import { raceView, bindRace } from "./ui/race.js?v=09914de0";
+import { seasonView } from "./ui/season.js?v=09914de0";
+import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=09914de0";
+import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=09914de0";
+import { pickView, compareView } from "./ui/skills.js?v=09914de0";
+import { rulesView } from "./ui/rules.js?v=09914de0";
+import { loading, failed } from "./ui/parts.js?v=09914de0";
+import { me, theme } from "./store.js?v=09914de0";
+import { install } from "./install.js?v=09914de0";
 
 const app = document.getElementById("app");
 const html = document.documentElement;
@@ -62,6 +64,12 @@ async function route() {
       app.innerHTML = settingsView(theme.get(), me.get() && me.name());
       bindSettings(app);
       setTitle("Настройки");
+      return;
+    }
+    if (kind === "rules") {
+      setNav("settings");
+      app.innerHTML = rulesView();
+      setTitle("Регламент");
       return;
     }
     if (kind === "new") {

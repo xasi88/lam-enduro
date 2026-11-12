@@ -1,8 +1,8 @@
 // Настройки: тема, профиль, что нового, версия.
-import { esc } from "./format.js?v=880737b2";
-import { THEMES } from "../store.js?v=880737b2";
-import { VERSIONS, VERSION } from "../version.js?v=880737b2";
-import { install } from "../install.js?v=880737b2";
+import { esc } from "./format.js?v=09914de0";
+import { THEMES } from "../store.js?v=09914de0";
+import { VERSIONS, VERSION } from "../version.js?v=09914de0";
+import { install } from "../install.js?v=09914de0";
 
 export function settingsView(themeNow, meName) {
   return `<header class="page-head"><div class="wrap"><h1>Настройки</h1></div></header>`
@@ -14,6 +14,7 @@ export function settingsView(themeNow, meName) {
     + (meName ? `<p>Закреплён: <b>${esc(meName)}</b></p><div class="cta"><a class="btn btn-ghost" href="#/me">Открыть</a><button class="btn btn-ghost" type="button" data-unpin>Открепить</button></div>`
       : `<p class="muted">Профиль не закреплён.</p><div class="cta"><a class="btn btn-ghost" href="#/me">Найти себя</a></div>`)
     + `</div>`
+    + `<div class="set-group"><h2 class="set-h">Регламент</h2><p class="muted">Классы, места, очки, штрафы, сход.</p><div class="cta"><a class="btn btn-ghost" href="#/rules">Открыть регламент</a></div></div>`
     + appGroup()
     + `<div class="set-group"><h2 class="set-h">Версия ${esc(VERSION)}</h2><a class="link-btn" href="#/new">Что нового</a></div>`
     + `</div></section>`;

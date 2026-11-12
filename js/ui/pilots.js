@@ -1,10 +1,10 @@
 // Раздел «Профиль»: пилот находит себя и закрепляет. Страница одного пилота.
-import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=880737b2";
-import { plate, pilotHref, ICON } from "./parts.js?v=880737b2";
-import { pilotKey } from "../domain/parse.js?v=880737b2";
-import { pilotHistory } from "../domain/season.js?v=880737b2";
-import { LEAGUE } from "../races.js?v=880737b2";
-import { skillsBlock } from "./skills.js?v=880737b2";
+import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=09914de0";
+import { plate, pilotHref, ICON } from "./parts.js?v=09914de0";
+import { pilotKey } from "../domain/parse.js?v=09914de0";
+import { pilotHistory } from "../domain/season.js?v=09914de0";
+import { LEAGUE } from "../races.js?v=09914de0";
+import { skillsBlock } from "./skills.js?v=09914de0";
 
 /** Все пилоты сезона одним списком: лучший класс, очки. */
 function everyone(season) {
@@ -51,7 +51,7 @@ export function pilotView(races, season, key, mine) {
   const share = `https://wa.me/?text=${encodeURIComponent(text + " " + location.href.split("#")[0] + "#/p/" + encodeURIComponent(key))}`;
   return `<header class="page-head"><div class="wrap">${mine ? `<p class="eyebrow">Мой профиль</p>` : `<a class="back" href="#/p">${ICON.back}Все пилоты</a>`}`
     + `<h1>${esc(r0.name)}</h1><p class="lede">${esc([village, team && "Команда " + team].filter(Boolean).join(" · ") || "Село не указано")}</p>`
-    + `<div class="p-stand">` + stands.map(({ c, p }) => `<a class="p-card" href="#/s/${LEAGUE.season}/${c.id}"><span class="dot p-${c.id}"></span><span>${esc(c.name)}</span>`
+    + `<div class="p-stand">` + stands.map(({ c, p }) => `<a class="p-card p-${c.id}" href="#/s/${LEAGUE.season}/${c.id}"><span class="dot p-${c.id}"></span><span>${esc(c.name)}</span>`
       + `<b>${p.rank} место</b><small>${p.points} ${plural(p.points, "очко", "очка", "очков")} · ${p.starts} ${plural(p.starts, "старт", "старта", "стартов")}</small></a>`).join("") + `</div>`
     + `<div class="cta">${mine ? "" : `<button class="btn btn-fire" type="button" data-pin="${esc(key)}" data-name="${esc(r0.name)}">${ICON.user}Это я</button>`}`
     + `<a class="btn ${mine ? "btn-fire" : "btn-ghost"}" href="${share}" target="_blank" rel="noopener">${ICON.share}Поделиться в WhatsApp</a>`

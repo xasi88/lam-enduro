@@ -1,7 +1,7 @@
 // Раздел «Сезон»: выбор сезона, класс, подиум по очкам, таблица остальных.
-import { esc, plural } from "./format.js?v=880737b2";
-import { classTabs, pilotHref } from "./parts.js?v=880737b2";
-import { POINTS } from "../domain/results.js?v=880737b2";
+import { esc, plural } from "./format.js?v=09914de0";
+import { classTabs, pilotHref } from "./parts.js?v=09914de0";
+import { POINTS } from "../domain/results.js?v=09914de0";
 
 const pts = (n) => `${n} ${plural(n, "очко", "очка", "очков")}`;
 

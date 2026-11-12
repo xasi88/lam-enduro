@@ -1,11 +1,11 @@
 // Паутинка сторон пилота и экран сравнения двух пилотов. Расчёт: js/domain/skills.js
-import { esc, dateRu, STATUS } from "./format.js?v=880737b2";
-import { ICON } from "./parts.js?v=880737b2";
-import { pilotKey } from "../domain/parse.js?v=880737b2";
-import { SIDES, classSkills, pilotSkills, headToHead, better } from "../domain/skills.js?v=880737b2";
-import { LEAGUE } from "../races.js?v=880737b2";
+import { esc, dateRu, STATUS } from "./format.js?v=09914de0";
+import { ICON } from "./parts.js?v=09914de0";
+import { pilotKey } from "../domain/parse.js?v=09914de0";
+import { SIDES, classSkills, pilotSkills, headToHead, better } from "../domain/skills.js?v=09914de0";
+import { LEAGUE } from "../races.js?v=09914de0";
 
-const W = 340, H = 300, CX = 170, CY = 150, R = 92;
+const W = 340, H = 300, CX = 170, CY = 150, R = 84;
 const pt = (i, f) => {
   const a = -Math.PI / 2 + (i * 2 * Math.PI) / SIDES.length;
   return [CX + Math.cos(a) * R * f, CY + Math.sin(a) * R * f];
@@ -29,7 +29,7 @@ export function radar(sets, labels = true) {
     return `<text class="rd-label" x="${x.toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${anchor}">${esc(s.name)}</text>`
       + (val ? `<text class="rd-val" x="${x.toFixed(1)}" y="${(y + dy + 17).toFixed(1)}" text-anchor="${anchor}">${esc(val)}</text>` : "");
   }).join("");
-  return `<svg class="radar" viewBox="-30 -8 ${W + 60} ${H + 26}" role="img" aria-label="Стороны пилота">${rings}${axes}${shapes}${text}</svg>`;
+  return `<svg class="radar" viewBox="-44 -6 ${W + 88} ${H + 24}" role="img" aria-label="Стороны пилота">${rings}${axes}${shapes}${text}</svg>`;
 }
 
 const seasonRaces = (races) => races.filter((r) => r.season === LEAGUE.season);

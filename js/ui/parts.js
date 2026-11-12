@@ -1,6 +1,6 @@
 // Общие куски экранов: номер, строка протокола, пьедестал, вкладки классов.
-import { esc, dur, clock, penText, plural, STATUS } from "./format.js?v=880737b2";
-import { pilotKey } from "../domain/parse.js?v=880737b2";
+import { esc, dur, clock, penText, plural, STATUS } from "./format.js?v=09914de0";
+import { pilotKey } from "../domain/parse.js?v=09914de0";
 
 export const ICON = {
   search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>',
