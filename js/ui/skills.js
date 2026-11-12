@@ -1,9 +1,9 @@
 // Паутинка сторон пилота и экран сравнения двух пилотов. Расчёт: js/domain/skills.js
-import { esc, dateRu, STATUS } from "./format.js?v=d170f212";
-import { ICON } from "./parts.js?v=d170f212";
-import { pilotKey } from "../domain/parse.js?v=d170f212";
-import { SIDES, classSkills, pilotSkills, headToHead, better } from "../domain/skills.js?v=d170f212";
-import { LEAGUE } from "../races.js?v=d170f212";
+import { esc, dateRu, STATUS } from "./format.js?v=e5947e70";
+import { ICON } from "./parts.js?v=e5947e70";
+import { pilotKey } from "../domain/parse.js?v=e5947e70";
+import { SIDES, classSkills, pilotSkills, headToHead, better } from "../domain/skills.js?v=e5947e70";
+import { LEAGUE } from "../races.js?v=e5947e70";
 
 const W = 340, H = 300, CX = 170, CY = 150, R = 84;
 const pt = (i, f) => {
@@ -59,27 +59,34 @@ export function skillsBlock(races, key) {
 }
 
 /** Все пилоты сезона для выбора соперника. */
-function pickList(races, except) {
-  const m = new Map();
+/** Соперники по классам. Класс самого пилота первым: чаще сравнивают внутри класса. */
+function pickGroups(races, except) {
+  const m = new Map(), classes = new Map();
+  let mine = null;
   for (const r of seasonRaces(races)) for (const c of r.classes) for (const x of c.riders) {
     if (!x.name || x.status === "nodata" || x.status === "dns") continue;
+    if (!classes.has(c.id)) classes.set(c.id, c.name);
     const k = pilotKey(x.name);
-    if (k !== except) m.set(k, { key: k, name: x.name, village: x.village, cls: c.id });
+    if (k === except) mine = c.id;
+    else m.set(k, { key: k, name: x.name, village: x.village, cls: c.id });
   }
-  return [...m.values()].sort((a, b) => a.name.localeCompare(b.name, "ru"));
+  const ids = [...classes.keys()].sort((a, b) => (b === mine) - (a === mine));
+  const list = [...m.values()].sort((a, b) => a.name.localeCompare(b.name, "ru"));
+  return ids.map((id) => ({ id, name: classes.get(id), pilots: list.filter((p) => p.cls === id) })).filter((g) => g.pilots.length);
 }
 
 /** Выбор второго пилота. */
 export function pickView(races, a) {
   const me = pilotSkills(seasonRaces(races), a);
-  const list = pickList(races, a);
+  const groups = pickGroups(races, a);
   return `<header class="page-head"><div class="wrap"><a class="back" href="#/p/${encodeURIComponent(a)}">${ICON.back}${esc(me?.name || "Пилот")}</a>`
     + `<h1>С кем сравнить?</h1><div class="search"><label for="pq">Поиск пилота</label><div class="search-box">${ICON.search}`
     + `<input id="pq" type="search" placeholder="Фамилия, имя или село" autocomplete="off" enterkeyhint="search"></div></div></div></header>`
-    + `<section class="band band-tight"><div class="wrap"><ul class="plist" id="plist">`
-    + list.map((p) => `<li data-hay="${esc(pilotKey([p.name, p.village].join(" ")))}"><a href="#/vs/${encodeURIComponent(a)}/${encodeURIComponent(p.key)}">`
-      + `<span class="dot p-${p.cls}"></span><span class="pl-who"><b>${esc(p.name)}</b><small>${esc(p.village || "Село не указано")}</small></span></a></li>`).join("")
-    + `</ul><p class="note" id="pnone" hidden>Никого не нашли. Проверь фамилию или село.</p></div></section>`;
+    + `<section class="band band-tight"><div class="wrap" id="plist">`
+    + groups.map((g) => `<div class="pgroup"><h2 class="pgroup-h"><span class="dot p-${g.id}"></span>${esc(g.name)}<span class="grp-n">${g.pilots.length}</span></h2><ul class="plist">`
+      + g.pilots.map((p) => `<li data-hay="${esc(pilotKey([p.name, p.village].join(" ")))}"><a href="#/vs/${encodeURIComponent(a)}/${encodeURIComponent(p.key)}">`
+        + `<span class="dot p-${p.cls}"></span><span class="pl-who"><b>${esc(p.name)}</b><small>${esc(p.village || "Село не указано")}</small></span></a></li>`).join("") + `</ul></div>`).join("")
+    + `<p class="note" id="pnone" hidden>Никого не нашли. Проверь фамилию или село.</p></div></section>`;
 }
 
 /** Сравнение двух пилотов. */

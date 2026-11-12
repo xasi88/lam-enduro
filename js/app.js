@@ -5,20 +5,20 @@
 // #/vs/<ключ>           выбор соперника    #/vs/<ключ>/<ключ2>  сравнение двух пилотов
 // #/settings            настройки          #/new                что нового
 // #/rules               регламент
-import { RACES, LEAGUE } from "./races.js?v=d170f212";
-import { loadAll, loadRace } from "./data.js?v=d170f212";
-import { seasonTable, seasonsOf } from "./domain/season.js?v=d170f212";
-import { homeView } from "./ui/home.js?v=d170f212";
-import { raceView, bindRace } from "./ui/race.js?v=d170f212";
-import { seasonView } from "./ui/season.js?v=d170f212";
-import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=d170f212";
-import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=d170f212";
-import { pickView, compareView } from "./ui/skills.js?v=d170f212";
-import { rulesView } from "./ui/rules.js?v=d170f212";
-import { loading, failed } from "./ui/parts.js?v=d170f212";
-import { me, theme } from "./store.js?v=d170f212";
-import { install } from "./install.js?v=d170f212";
-import { watchMotion } from "./ui/motion.js?v=d170f212";
+import { RACES, LEAGUE } from "./races.js?v=e5947e70";
+import { loadAll, loadRace } from "./data.js?v=e5947e70";
+import { seasonTable, seasonsOf } from "./domain/season.js?v=e5947e70";
+import { homeView } from "./ui/home.js?v=e5947e70";
+import { raceView, bindRace } from "./ui/race.js?v=e5947e70";
+import { seasonView } from "./ui/season.js?v=e5947e70";
+import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=e5947e70";
+import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=e5947e70";
+import { pickView, compareView } from "./ui/skills.js?v=e5947e70";
+import { rulesView } from "./ui/rules.js?v=e5947e70";
+import { loading, failed } from "./ui/parts.js?v=e5947e70";
+import { me, theme } from "./store.js?v=e5947e70";
+import { install } from "./install.js?v=e5947e70";
+import { watchMotion } from "./ui/motion.js?v=e5947e70";
 
 const app = document.getElementById("app");
 const html = document.documentElement;

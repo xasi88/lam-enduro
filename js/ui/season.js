@@ -1,7 +1,7 @@
 // Раздел «Сезон»: выбор сезона, класс, подиум по очкам, таблица остальных.
-import { esc, plural } from "./format.js?v=d170f212";
-import { classTabs, pilotHref } from "./parts.js?v=d170f212";
-import { POINTS } from "../domain/results.js?v=d170f212";
+import { esc, plural } from "./format.js?v=e5947e70";
+import { classTabs, pilotHref } from "./parts.js?v=e5947e70";
+import { POINTS } from "../domain/results.js?v=e5947e70";
 
 function seasonPodium(top) {
   if (!top.length) return "";

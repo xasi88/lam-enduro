@@ -1,9 +1,9 @@
 // Регламент лиги. Новый пункт: дописать в RULES, раздел или строку. Порядок как на экране.
 // Источник правил: docs/Спецификация.md. Новое правило сначала согласовать с организатором.
-import { esc } from "./format.js?v=d170f212";
-import { ICON } from "./parts.js?v=d170f212";
-import { POINTS } from "../domain/results.js?v=d170f212";
-import { CLASSES, LEAGUE } from "../races.js?v=d170f212";
+import { esc } from "./format.js?v=e5947e70";
+import { ICON } from "./parts.js?v=e5947e70";
+import { POINTS } from "../domain/results.js?v=e5947e70";
+import { CLASSES, LEAGUE } from "../races.js?v=e5947e70";
 
 export const RULES_UPDATED = "2026-11-12";
 

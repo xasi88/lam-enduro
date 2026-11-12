@@ -1,10 +1,10 @@
 // Раздел «Профиль»: пилот находит себя и закрепляет. Страница одного пилота.
-import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=d170f212";
-import { plate, pilotHref, ICON } from "./parts.js?v=d170f212";
-import { pilotKey } from "../domain/parse.js?v=d170f212";
-import { pilotHistory, pilotStats } from "../domain/season.js?v=d170f212";
-import { LEAGUE } from "../races.js?v=d170f212";
-import { skillsBlock } from "./skills.js?v=d170f212";
+import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=e5947e70";
+import { plate, pilotHref, ICON } from "./parts.js?v=e5947e70";
+import { pilotKey } from "../domain/parse.js?v=e5947e70";
+import { pilotHistory, pilotStats } from "../domain/season.js?v=e5947e70";
+import { LEAGUE } from "../races.js?v=e5947e70";
+import { skillsBlock } from "./skills.js?v=e5947e70";
 
 /** Все пилоты сезона: у каждого класс, где больше очков. Экран делит их на группы по классам. */
 function everyone(season) {
