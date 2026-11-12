@@ -3,9 +3,9 @@
 //
 // Округление: среднее место и очки за старт до десятых, проценты до десятых (отставание)
 // или до целого (обойдённые соперники), время до секунды, штраф до минуты.
-import { pilotKey } from "./parse.js?v=8c47f740";
-import { leaguePoints } from "./results.js?v=8c47f740";
-import { gapPct } from "./skills.js?v=8c47f740";
+import { pilotKey } from "./parse.js?v=a4518193";
+import { leaguePoints } from "./results.js?v=a4518193";
+import { gapPct } from "./skills.js?v=a4518193";
 
 const started = (r) => r.status !== "dns" && r.status !== "nodata" && r.status !== "track";
 const round1 = (x) => Math.round(x * 10) / 10;
