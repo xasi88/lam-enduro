@@ -1,10 +1,10 @@
 // Раздел «Профиль»: пилот находит себя и закрепляет. Страница одного пилота.
-import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=09914de0";
-import { plate, pilotHref, ICON } from "./parts.js?v=09914de0";
-import { pilotKey } from "../domain/parse.js?v=09914de0";
-import { pilotHistory } from "../domain/season.js?v=09914de0";
-import { LEAGUE } from "../races.js?v=09914de0";
-import { skillsBlock } from "./skills.js?v=09914de0";
+import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=7244b37f";
+import { plate, pilotHref, ICON } from "./parts.js?v=7244b37f";
+import { pilotKey } from "../domain/parse.js?v=7244b37f";
+import { pilotHistory, pilotStats } from "../domain/season.js?v=7244b37f";
+import { LEAGUE } from "../races.js?v=7244b37f";
+import { skillsBlock } from "./skills.js?v=7244b37f";
 
 /** Все пилоты сезона одним списком: лучший класс, очки. */
 function everyone(season) {
@@ -40,6 +40,21 @@ export function bindPilots(root) {
   });
 }
 
+/** Три карточки цифр пилота со столбиками по гонкам (образец Stat card). */
+function statCards(rows) {
+  const s = pilotStats(rows);
+  const bars = (h) => `<span class="stat-bars" aria-hidden="true">` + s.series.map((x, i) => {
+    const v = h(x);
+    return `<i class="${v ? "" : "off"}" style="--i:${i};height:${Math.max(10, Math.round(v * 100))}%"></i>`;
+  }).join("") + `</span>`;
+  const card = (k, v, sub, h) => `<div class="stat"><span class="stat-k">${k}</span>${v}<small>${sub}</small>${bars(h)}</div>`;
+  return `<div class="p-stats">`
+    + card("Гонок", `<b class="stat-v"><span data-roll>${s.starts}</span></b>`, `${s.finishes} ${plural(s.finishes, "финиш", "финиша", "финишей")}`, (x) => (x.place ? 1 : 0))
+    + card("Лучшее место", s.best ? `<b class="stat-v"><span data-roll>${s.best}</span></b>` : `<b class="stat-v none">Нет финиша</b>`, "по гонкам", (x) => (x.place ? (21 - Math.min(x.place, 20)) / 20 : 0))
+    + card("Очки", `<b class="stat-v"><span data-roll>${s.points}</span></b>`, "за все гонки", (x) => x.points / 25)
+    + `</div>`;
+}
+
 export function pilotView(races, season, key, mine) {
   const rows = pilotHistory(races, key).sort((a, b) => b.race.date.localeCompare(a.race.date));
   if (!rows.length) return `<div class="wrap state-box"><p>Такого пилота нет в таблицах.</p><a class="btn btn-ghost" href="#/me">Выбрать себя</a>${mine ? `<button class="btn btn-ghost" type="button" data-unpin>Открепить профиль</button>` : ""}</div>`;
@@ -53,6 +68,7 @@ export function pilotView(races, season, key, mine) {
     + `<h1>${esc(r0.name)}</h1><p class="lede">${esc([village, team && "Команда " + team].filter(Boolean).join(" · ") || "Село не указано")}</p>`
     + `<div class="p-stand">` + stands.map(({ c, p }) => `<a class="p-card p-${c.id}" href="#/s/${LEAGUE.season}/${c.id}"><span class="dot p-${c.id}"></span><span>${esc(c.name)}</span>`
       + `<b>${p.rank} место</b><small>${p.points} ${plural(p.points, "очко", "очка", "очков")} · ${p.starts} ${plural(p.starts, "старт", "старта", "стартов")}</small></a>`).join("") + `</div>`
+    + statCards(rows)
     + `<div class="cta">${mine ? "" : `<button class="btn btn-fire" type="button" data-pin="${esc(key)}" data-name="${esc(r0.name)}">${ICON.user}Это я</button>`}`
     + `<a class="btn ${mine ? "btn-fire" : "btn-ghost"}" href="${share}" target="_blank" rel="noopener">${ICON.share}Поделиться в WhatsApp</a>`
     + `${mine ? `<button class="btn btn-ghost" type="button" data-unpin>Сменить пилота</button>` : ""}</div></div></header>`

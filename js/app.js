@@ -5,19 +5,20 @@
 // #/vs/<ключ>           выбор соперника    #/vs/<ключ>/<ключ2>  сравнение двух пилотов
 // #/settings            настройки          #/new                что нового
 // #/rules               регламент
-import { RACES, LEAGUE } from "./races.js?v=09914de0";
-import { loadAll, loadRace } from "./data.js?v=09914de0";
-import { seasonTable, seasonsOf } from "./domain/season.js?v=09914de0";
-import { homeView } from "./ui/home.js?v=09914de0";
-import { raceView, bindRace } from "./ui/race.js?v=09914de0";
-import { seasonView } from "./ui/season.js?v=09914de0";
-import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=09914de0";
-import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=09914de0";
-import { pickView, compareView } from "./ui/skills.js?v=09914de0";
-import { rulesView } from "./ui/rules.js?v=09914de0";
-import { loading, failed } from "./ui/parts.js?v=09914de0";
-import { me, theme } from "./store.js?v=09914de0";
-import { install } from "./install.js?v=09914de0";
+import { RACES, LEAGUE } from "./races.js?v=7244b37f";
+import { loadAll, loadRace } from "./data.js?v=7244b37f";
+import { seasonTable, seasonsOf } from "./domain/season.js?v=7244b37f";
+import { homeView } from "./ui/home.js?v=7244b37f";
+import { raceView, bindRace } from "./ui/race.js?v=7244b37f";
+import { seasonView } from "./ui/season.js?v=7244b37f";
+import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=7244b37f";
+import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=7244b37f";
+import { pickView, compareView } from "./ui/skills.js?v=7244b37f";
+import { rulesView } from "./ui/rules.js?v=7244b37f";
+import { loading, failed } from "./ui/parts.js?v=7244b37f";
+import { me, theme } from "./store.js?v=7244b37f";
+import { install } from "./install.js?v=7244b37f";
+import { watchMotion } from "./ui/motion.js?v=7244b37f";
 
 const app = document.getElementById("app");
 const html = document.documentElement;
@@ -131,5 +132,6 @@ app.addEventListener("click", (e) => {
   if (j) { e.preventDefault(); document.getElementById(j.dataset.jump)?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
 });
 window.addEventListener("hashchange", route);
+watchMotion(app);
 install.onChange(() => { if (location.hash === "#/settings") route(); });
 route();

@@ -1,11 +1,11 @@
 // Офлайн-работа приложения «Лам Эндуро». Файлы сайта: сначала сеть, без сети копия.
 // Данные таблиц сюда не идут: у них своя копия в памяти телефона (js/data.js).
-const CACHE = "lam-enduro-v0.4.0";
-const CORE = ["./", "index.html", "manifest.webmanifest", "css/tokens.css", "css/base.css", "css/screens.css",
+const CACHE = "lam-enduro-v0.5.0";
+const CORE = ["./", "index.html", "manifest.webmanifest", "css/tokens.css", "css/base.css", "css/screens.css", "css/motion.css",
   "js/app.js", "js/data.js", "js/races.js", "js/store.js", "js/version.js", "js/install.js",
   "js/domain/parse.js", "js/domain/results.js", "js/domain/season.js", "js/domain/skills.js",
   "js/ui/format.js", "js/ui/home.js", "js/ui/parts.js", "js/ui/pilots.js", "js/ui/race.js", "js/ui/race-more.js",
-  "js/ui/season.js", "js/ui/settings.js", "js/ui/skills.js", "js/ui/rules.js", "img/icon.svg", "img/icon-192.png"];
+  "js/ui/season.js", "js/ui/settings.js", "js/ui/skills.js", "js/ui/rules.js", "js/ui/motion.js", "img/icon.svg", "img/icon-192.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE.map((u) => new Request(u, { cache: "no-cache" })))).then(() => self.skipWaiting()));

@@ -1,8 +1,8 @@
 // Страница гонки: шапка, итоги по классам, поиск внутри гонки. Остальные разделы: race-more.js
-import { esc, dur, plural, dateRu, timeNow, STATE } from "./format.js?v=09914de0";
-import { plate, row, podium, classTabs, others, ICON } from "./parts.js?v=09914de0";
-import { moreSections, villagesOf } from "./race-more.js?v=09914de0";
-import { pilotKey } from "../domain/parse.js?v=09914de0";
+import { esc, dur, plural, dateRu, timeNow, STATE } from "./format.js?v=7244b37f";
+import { plate, row, podium, classTabs, others, ICON } from "./parts.js?v=7244b37f";
+import { moreSections, villagesOf } from "./race-more.js?v=7244b37f";
+import { pilotKey } from "../domain/parse.js?v=7244b37f";
 
 const norm = (s) => pilotKey(s);
 
@@ -16,9 +16,9 @@ function hero(d) {
     + `<h1>${esc(d.title || d.name)}</h1>`
     + `<p class="sub"><span class="state ${st.cls}">${st.label}</span>${sp ? `${sp.logo ? `<img class="sub-logo" src="${esc(sp.logo)}" alt="" width="44" height="44">` : ""}<span class="muted sub-sp">${esc(sp.brand)}</span>` : ""}</p>`
     + (d.about ? `<p class="lede">${esc(d.about)}</p>` : "")
-    + `<dl class="facts"><div><dt>в списках</dt><dd>${all.length}</dd></div><div><dt>на финише</dt><dd>${fin}</dd></div>`
-    + `<div><dt>${plural(d.classes.length, "класс", "класса", "классов")}</dt><dd>${d.classes.length}</dd></div>`
-    + `<div><dt>сёл и городов</dt><dd>${villagesOf(d).size}</dd></div></dl>`
+    + `<dl class="facts"><div><dt>в списках</dt><dd><span data-roll>${all.length}</span></dd></div><div><dt>на финише</dt><dd><span data-roll>${fin}</span></dd></div>`
+    + `<div><dt>${plural(d.classes.length, "класс", "класса", "классов")}</dt><dd><span data-roll>${d.classes.length}</span></dd></div>`
+    + `<div><dt>сёл и городов</dt><dd><span data-roll>${villagesOf(d).size}</span></dd></div></dl>`
     + `<div class="cta"><a class="btn btn-fire" href="#itogi" data-jump="itogi">Смотреть итоги</a><a class="btn btn-ghost" href="#poisk" data-jump="poisk">Найти себя</a></div>`
     + `</div>` + (d.photo ? `<figure class="hero-photo"><img src="${esc(d.photo.src)}" alt="${esc(d.photo.alt)}" width="480" height="848"><figcaption>${esc(d.photo.caption)}</figcaption></figure>` : "")
     + `</div></header>`;

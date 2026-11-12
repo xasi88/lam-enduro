@@ -1,16 +1,14 @@
 // Раздел «Сезон»: выбор сезона, класс, подиум по очкам, таблица остальных.
-import { esc, plural } from "./format.js?v=09914de0";
-import { classTabs, pilotHref } from "./parts.js?v=09914de0";
-import { POINTS } from "../domain/results.js?v=09914de0";
-
-const pts = (n) => `${n} ${plural(n, "очко", "очка", "очков")}`;
+import { esc, plural } from "./format.js?v=7244b37f";
+import { classTabs, pilotHref } from "./parts.js?v=7244b37f";
+import { POINTS } from "../domain/results.js?v=7244b37f";
 
 function seasonPodium(top) {
   if (!top.length) return "";
   return `<div class="podium" aria-label="Три лучших по очкам">` + top.map((p, i) =>
     `<div class="pod pod-${i + 1}"><div class="pod-who">`
     + `<a class="r-name" href="${pilotHref(p.name)}">${esc(p.name)}</a>`
-    + (p.village ? `<small>${esc(p.village)}</small>` : "") + `<span class="pod-time">${pts(p.points)}</span></div>`
+    + (p.village ? `<small>${esc(p.village)}</small>` : "") + `<span class="pod-time"><span data-roll>${p.points}</span> ${plural(p.points, "очко", "очка", "очков")}</span></div>`
     + `<div class="pod-step">${p.rank}</div></div>`).join("") + `</div><div class="podium-base"></div>`;
 }
 
@@ -18,7 +16,7 @@ const row = (p, max) => `<li class="st-row"><span class="r-place m${Math.min(p.r
   + `<div class="st-who"><a class="r-name" href="${pilotHref(p.name)}">${esc(p.name)}</a>`
   + `<small>${esc([p.village, p.team && "Команда " + p.team, `${p.starts} ${plural(p.starts, "старт", "старта", "стартов")}`].filter(Boolean).join(" · "))}</small></div>`
   + `<span class="st-bar"><i style="width:${Math.max(2, (p.points / max) * 100)}%"></i></span>`
-  + `<b class="pts">${p.points}</b></li>`;
+  + `<b class="pts"><span data-roll>${p.points}</span></b></li>`;
 
 export function seasonView({ season, clsId, year, years, raceCount }) {
   const c = season.find((x) => x.id === clsId) || season[0];

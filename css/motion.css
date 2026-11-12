@@ -1,0 +1,37 @@
+/* Движение на экранах (2026-11-12). Код: js/ui/motion.js. Брендбук, раздел «Движение». */
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Подложка выбранного класса переезжает и меняет цвет */
+.classes{position:relative}
+.cls-pill{position:absolute;left:0;top:0;border-radius:var(--r);pointer-events:none}
+.cls-pill.go{transition:transform .38s cubic-bezier(.3,1.25,.5,1),background-color .38s ease}
+.has-pill .cls{position:relative}
+.has-pill .cls[aria-current]{background:transparent;border-color:transparent}
+
+/* Цифры табло */
+.roll{display:inline-flex;align-items:flex-start;height:1em;line-height:1;overflow:hidden;vertical-align:-.1em}
+.roll-col{display:flex;flex-direction:column;flex:none;transition-property:transform;transition-timing-function:cubic-bezier(.2,.8,.2,1)}
+.roll-col i{display:block;flex:none;height:1em;font-style:normal;text-align:center}
+
+/* Плавное раскрытие годов и групп: знак «+» поворачивается в «×» */
+:root{interpolate-size:allow-keywords}
+.year::details-content,.grp::details-content{block-size:0;overflow:hidden;transition:block-size .35s ease,content-visibility .35s allow-discrete}
+.year[open]::details-content,.grp[open]::details-content{block-size:auto}
+.year summary::after,.grp summary::after,.year[open] summary::after,.grp[open] summary::after{content:"+";transition:transform .35s ease}
+.year[open] summary::after,.grp[open] summary::after{transform:rotate(45deg)}
+
+/* Цифры пилота */
+.p-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:16px;max-width:760px}
+.stat{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);min-width:0}
+.stat-k{font-size:13px;color:var(--muted);line-height:1.25;min-height:2.5em}
+.stat-v{font-family:var(--f-display);font-weight:800;letter-spacing:-.02em;font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat-v.none{font-size:18px;color:var(--muted)}
+.stat small{font-size:12px;color:var(--muted)}
+.stat-bars{display:flex;align-items:flex-end;gap:3px;height:32px;margin-top:auto;padding-top:6px}
+.stat-bars i{flex:1;max-width:18px;min-height:3px;border-radius:2px;background:var(--brand);transform-origin:bottom;animation:bar-up .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 60ms)}
+.stat-bars i.off{background:var(--line)}
+@keyframes bar-up{from{transform:scaleY(0)}}
+
+@media (prefers-reduced-motion:reduce){
+  .cls-pill.go,.roll-col,.year::details-content,.grp::details-content,.year summary::after,.grp summary::after{transition:none}
+}

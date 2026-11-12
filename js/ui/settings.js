@@ -1,8 +1,8 @@
 // Настройки: тема, профиль, что нового, версия.
-import { esc } from "./format.js?v=09914de0";
-import { THEMES } from "../store.js?v=09914de0";
-import { VERSIONS, VERSION } from "../version.js?v=09914de0";
-import { install } from "../install.js?v=09914de0";
+import { esc } from "./format.js?v=7244b37f";
+import { THEMES } from "../store.js?v=7244b37f";
+import { VERSIONS, VERSION } from "../version.js?v=7244b37f";
+import { install } from "../install.js?v=7244b37f";
 
 export function settingsView(themeNow, meName) {
   return `<header class="page-head"><div class="wrap"><h1>Настройки</h1></div></header>`

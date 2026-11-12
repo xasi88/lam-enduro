@@ -1,5 +1,5 @@
 // Общая таблица сезона и страница пилота. Чистые функции, без браузера.
-import { pilotKey } from "./parse.js?v=09914de0";
+import { pilotKey } from "./parse.js?v=7244b37f";
 
 /**
  * races: [{ id, name, date, classes: [{ id, name, riders }] }], места уже поставлены.
@@ -59,6 +59,22 @@ export function pilotHistory(races, key) {
     }
   }
   return rows;
+}
+
+/**
+ * Цифры пилота для карточек на его странице: гонки, финиши, лучшее место, очки.
+ * rows из pilotHistory. series: по гонкам от старой к новой, последние 10, для столбиков.
+ */
+export function pilotStats(rows) {
+  const list = [...rows].sort((a, b) => a.race.date.localeCompare(b.race.date));
+  const places = list.map((x) => x.rider.place).filter((p) => p != null);
+  return {
+    starts: list.length,
+    finishes: places.length,
+    best: places.length ? Math.min(...places) : null,
+    points: list.reduce((s, x) => s + (x.rider.points || 0), 0),
+    series: list.slice(-10).map((x) => ({ place: x.rider.place ?? null, points: x.rider.points || 0 })),
+  };
 }
 
 /** Сезоны по годам из списка гонок, новый сверху. Пустой список: текущий год лиги. */
