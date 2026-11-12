@@ -1,12 +1,12 @@
 // Раздел «Профиль»: пилот находит себя и закрепляет. Страница одного пилота.
-import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=7244b37f";
-import { plate, pilotHref, ICON } from "./parts.js?v=7244b37f";
-import { pilotKey } from "../domain/parse.js?v=7244b37f";
-import { pilotHistory, pilotStats } from "../domain/season.js?v=7244b37f";
-import { LEAGUE } from "../races.js?v=7244b37f";
-import { skillsBlock } from "./skills.js?v=7244b37f";
+import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=d170f212";
+import { plate, pilotHref, ICON } from "./parts.js?v=d170f212";
+import { pilotKey } from "../domain/parse.js?v=d170f212";
+import { pilotHistory, pilotStats } from "../domain/season.js?v=d170f212";
+import { LEAGUE } from "../races.js?v=d170f212";
+import { skillsBlock } from "./skills.js?v=d170f212";
 
-/** Все пилоты сезона одним списком: лучший класс, очки. */
+/** Все пилоты сезона: у каждого класс, где больше очков. Экран делит их на группы по классам. */
 function everyone(season) {
   const m = new Map();
   for (const c of season) for (const p of c.pilots) {
@@ -21,11 +21,15 @@ export function pilotsView(season) {
   return `<header class="page-head"><div class="wrap"><h1>Профиль</h1><p class="lede">Найди себя в списке и открой свою страницу. Там нажми «Это я»: профиль закрепится на этом телефоне.</p>`
     + `<div class="search"><label for="pq">Поиск среди ${list.length} ${plural(list.length, "пилота", "пилотов", "пилотов")}</label><div class="search-box">${ICON.search}`
     + `<input id="pq" type="search" placeholder="Фамилия, имя или село" autocomplete="off" enterkeyhint="search"></div></div></div></header>`
-    + `<section class="band band-tight"><div class="wrap"><ul class="plist" id="plist">`
-    + list.map((p) => `<li data-hay="${esc(pilotKey([p.name, p.village, p.team].join(" ")))}"><a href="${pilotHref(p.name)}">`
-      + `<span class="dot p-${p.cls.id}"></span><span class="pl-who"><b>${esc(p.name)}</b><small>${esc(p.village || "Село не указано")}</small></span>`
-      + `<span class="pts">${p.points}</span></a></li>`).join("")
-    + `</ul><p class="note" id="pnone" hidden>Никого не нашли. Проверь фамилию или село.</p></div></section>`;
+    + `<section class="band band-tight"><div class="wrap" id="plist">`
+    + season.map((c) => {
+      const ps = list.filter((p) => p.cls.id === c.id);
+      return ps.length ? `<div class="pgroup"><h2 class="pgroup-h"><span class="dot p-${c.id}"></span>${esc(c.name)}<span class="grp-n">${ps.length}</span></h2><ul class="plist">`
+        + ps.map((p) => `<li data-hay="${esc(pilotKey([p.name, p.village, p.team].join(" ")))}"><a href="${pilotHref(p.name)}">`
+          + `<span class="dot p-${c.id}"></span><span class="pl-who"><b>${esc(p.name)}</b><small>${esc(p.village || "Село не указано")}</small></span>`
+          + `<span class="pts">${p.points}</span></a></li>`).join("") + `</ul></div>` : "";
+    }).join("")
+    + `<p class="note" id="pnone" hidden>Никого не нашли. Проверь фамилию или село.</p></div></section>`;
 }
 
 export function bindPilots(root) {
@@ -36,6 +40,7 @@ export function bindPilots(root) {
     const words = q.value.trim().split(/\s+/).filter(Boolean).map(pilotKey);
     let shown = 0;
     items.forEach((li) => { const ok = words.every((w) => li.dataset.hay.includes(w)); li.hidden = !ok; shown += ok; });
+    root.querySelectorAll(".pgroup").forEach((g) => { g.hidden = !g.querySelector("li:not([hidden])"); });
     root.querySelector("#pnone").hidden = shown > 0;
   });
 }

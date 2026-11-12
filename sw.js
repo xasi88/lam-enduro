@@ -1,6 +1,6 @@
 // Офлайн-работа приложения «Лам Эндуро». Файлы сайта: сначала сеть, без сети копия.
 // Данные таблиц сюда не идут: у них своя копия в памяти телефона (js/data.js).
-const CACHE = "lam-enduro-v0.5.0";
+const CACHE = "lam-enduro-v0.5.1";
 const CORE = ["./", "index.html", "manifest.webmanifest", "css/tokens.css", "css/base.css", "css/screens.css", "css/motion.css",
   "js/app.js", "js/data.js", "js/races.js", "js/store.js", "js/version.js", "js/install.js",
   "js/domain/parse.js", "js/domain/results.js", "js/domain/season.js", "js/domain/skills.js",

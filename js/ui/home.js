@@ -1,7 +1,7 @@
 // Раздел «Гонки»: все гонки по годам. Последний год открыт, последняя гонка первая и крупнее.
-import { esc, dateRu, plural, STATE } from "./format.js?v=7244b37f";
-import { plate } from "./parts.js?v=7244b37f";
-import { racesByYear } from "../domain/season.js?v=7244b37f";
+import { esc, dateRu, plural, STATE } from "./format.js?v=d170f212";
+import { plate } from "./parts.js?v=d170f212";
+import { racesByYear } from "../domain/season.js?v=d170f212";
 
 function raceCard(d, big) {
   const href = `#/g/${d.id}`;

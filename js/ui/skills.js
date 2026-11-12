@@ -1,9 +1,9 @@
 // Паутинка сторон пилота и экран сравнения двух пилотов. Расчёт: js/domain/skills.js
-import { esc, dateRu, STATUS } from "./format.js?v=7244b37f";
-import { ICON } from "./parts.js?v=7244b37f";
-import { pilotKey } from "../domain/parse.js?v=7244b37f";
-import { SIDES, classSkills, pilotSkills, headToHead, better } from "../domain/skills.js?v=7244b37f";
-import { LEAGUE } from "../races.js?v=7244b37f";
+import { esc, dateRu, STATUS } from "./format.js?v=d170f212";
+import { ICON } from "./parts.js?v=d170f212";
+import { pilotKey } from "../domain/parse.js?v=d170f212";
+import { SIDES, classSkills, pilotSkills, headToHead, better } from "../domain/skills.js?v=d170f212";
+import { LEAGUE } from "../races.js?v=d170f212";
 
 const W = 340, H = 300, CX = 170, CY = 150, R = 84;
 const pt = (i, f) => {

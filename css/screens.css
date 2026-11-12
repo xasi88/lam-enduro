@@ -118,6 +118,8 @@
 .st-bar i{display:block;height:100%;background:var(--brand);border-radius:5px}
 
 /* Пилоты */
+.pgroup+.pgroup{margin-top:28px}
+.pgroup-h{max-width:760px;display:flex;align-items:center;gap:10px;font-size:18px;margin:0 0 8px}
 .plist{list-style:none;margin:0;padding:0;max-width:760px;border-top:1px solid var(--line)}
 .plist a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;min-height:60px;border-bottom:1px solid var(--line);text-decoration:none}
 .pl-who{display:flex;flex-direction:column;min-width:0}

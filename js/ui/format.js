@@ -26,7 +26,7 @@ export const dateRu = (iso, year = true) =>
 export const timeNow = (t) => new Date(t).toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 
 export const STATUS = {
-  dnf: { title: "Сход", text: "Пилот сошёл с трассы.", short: "Сход" },
+  dnf: { title: "Не финишировали", text: "Пилот стартовал, но не доехал до финиша.", short: "Не финишировал" },
   dsq: { title: "Дисквалификация", text: "Пилот снят с гонки.", short: "Снят" },
   dns: { title: "Не стартовали", text: "Пилот записан, но не вышел на старт.", short: "Не стартовал" },
   track: { title: "На трассе", text: "Старт есть, финиша пока нет.", short: "На трассе" },
