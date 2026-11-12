@@ -2,17 +2,20 @@
 // #/                    гонки по годам     #/g/<гонка>/<класс>  гонка
 // #/s/<год>/<класс>     сезон              #/me                 мой профиль или выбор себя
 // #/p                   все пилоты         #/p/<ключ>           пилот
+// #/vs/<ключ>           выбор соперника    #/vs/<ключ>/<ключ2>  сравнение двух пилотов
 // #/settings            настройки          #/new                что нового
-import { RACES, LEAGUE } from "./races.js?v=7cf5ea81";
-import { loadAll, loadRace } from "./data.js?v=7cf5ea81";
-import { seasonTable, seasonsOf } from "./domain/season.js?v=7cf5ea81";
-import { homeView } from "./ui/home.js?v=7cf5ea81";
-import { raceView, bindRace } from "./ui/race.js?v=7cf5ea81";
-import { seasonView } from "./ui/season.js?v=7cf5ea81";
-import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=7cf5ea81";
-import { settingsView, newsView } from "./ui/settings.js?v=7cf5ea81";
-import { loading, failed } from "./ui/parts.js?v=7cf5ea81";
-import { me, theme } from "./store.js?v=7cf5ea81";
+import { RACES, LEAGUE } from "./races.js?v=880737b2";
+import { loadAll, loadRace } from "./data.js?v=880737b2";
+import { seasonTable, seasonsOf } from "./domain/season.js?v=880737b2";
+import { homeView } from "./ui/home.js?v=880737b2";
+import { raceView, bindRace } from "./ui/race.js?v=880737b2";
+import { seasonView } from "./ui/season.js?v=880737b2";
+import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=880737b2";
+import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=880737b2";
+import { pickView, compareView } from "./ui/skills.js?v=880737b2";
+import { loading, failed } from "./ui/parts.js?v=880737b2";
+import { me, theme } from "./store.js?v=880737b2";
+import { install } from "./install.js?v=880737b2";
 
 const app = document.getElementById("app");
 const html = document.documentElement;
@@ -57,6 +60,7 @@ async function route() {
     if (kind === "settings") {
       setNav("settings");
       app.innerHTML = settingsView(theme.get(), me.get() && me.name());
+      bindSettings(app);
       setTitle("Настройки");
       return;
     }
@@ -66,7 +70,7 @@ async function route() {
       setTitle("Что нового");
       return;
     }
-    if (kind === "s" || kind === "p" || kind === "me" || kind === "") {
+    if (kind === "s" || kind === "p" || kind === "me" || kind === "vs" || kind === "") {
       setNav(kind === "s" ? "season" : kind === "" ? "races" : "me");
       app.innerHTML = loading();
       const all = await loadAll(RACES);
@@ -82,6 +86,13 @@ async function route() {
         return;
       }
       const season = seasonTable(seasonRaces(all));
+      if (kind === "vs") {
+        const ok = all.filter((d) => !d.error);
+        if (!a) return notFound();
+        if (b) { app.innerHTML = compareView(ok, season, a, b); setTitle("Сравнение"); }
+        else { app.innerHTML = pickView(ok, a); bindPilots(app); setTitle("С кем сравнить"); }
+        return;
+      }
       const mine = me.get();
       const key = kind === "me" ? mine : a;
       if (key && (kind === "me" || kind === "p")) { app.innerHTML = pilotView(all.filter((d) => !d.error), season, key, key === mine); setTitle(key === mine ? "Мой профиль" : "Пилот"); }
@@ -112,4 +123,5 @@ app.addEventListener("click", (e) => {
   if (j) { e.preventDefault(); document.getElementById(j.dataset.jump)?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
 });
 window.addEventListener("hashchange", route);
+install.onChange(() => { if (location.hash === "#/settings") route(); });
 route();

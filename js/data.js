@@ -6,9 +6,9 @@
 // 2. Выгрузка CSV по номеру листа даёт клетки как есть, со словами «Не Финишировал».
 // Запасной путь gviz: он выбрасывает слова из столбцов со временем, поэтому только если
 // первые два шага не сработали.
-import { parseCsv, readSheet, sheetGids } from "./domain/parse.js?v=7cf5ea81";
-import { rankClass, raceState } from "./domain/results.js?v=7cf5ea81";
-import { CLASSES } from "./races.js?v=7cf5ea81";
+import { parseCsv, readSheet, sheetGids } from "./domain/parse.js?v=880737b2";
+import { rankClass, raceState } from "./domain/results.js?v=880737b2";
+import { CLASSES } from "./races.js?v=880737b2";
 
 const BASE = "https://docs.google.com/spreadsheets/d/";
 const memo = new Map();

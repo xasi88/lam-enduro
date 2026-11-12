@@ -8,6 +8,7 @@
   --cls-gold:#EF4444; --cls-silver:#3DC46B; --cls-bronze:#F7D23A; --plate-ink:#121212;
   --medal-1:#F2C230; --medal-2:#E4E9ED; --medal-3:#E39A63;
   --step:#1A2360;
+  --side-a:var(--fire); --side-b:#4FC3F7;
   --f-display:"Dela Gothic One","Arial Black",Impact,sans-serif;
   --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   color-scheme:dark;
@@ -18,14 +19,14 @@
   --fire:#CF3D18; --fire-ink:#FFFFFF; --fire-2:#CF3D18;
   --warn-bg:#FFF0C2; --warn-ink:#644800; --live:#13894F;
   --gold:#9A6F00; --silver:#5F6A74; --bronze:#94511F;
-  --step:#0D1450; color-scheme:light}}
+  --step:#0D1450; --side-b:#1565C0; color-scheme:light}}
 :root[data-theme="light"]{
   --bg:#EEF1F7; --panel:#FFFFFF; --ink:#0D1450; --muted:#56608A; --line:#D3D9E8;
   --contour:rgba(13,20,80,.07);
   --fire:#CF3D18; --fire-ink:#FFFFFF; --fire-2:#CF3D18;
   --warn-bg:#FFF0C2; --warn-ink:#644800; --live:#13894F;
   --gold:#9A6F00; --silver:#5F6A74; --bronze:#94511F;
-  --step:#0D1450; color-scheme:light}
+  --step:#0D1450; --side-b:#1565C0; color-scheme:light}
 
 /* Стиль гонки под спонсора: только акцент, фон и панель. Тёмный вид всегда. */
 [data-sponsor="bekoil"]{
