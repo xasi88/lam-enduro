@@ -1,7 +1,7 @@
-// Разделы страницы гонки после итогов: откуда пилоты, команды, трасса, спасибо.
-import { esc } from "./format.js?v=a4518193";
-import { plate, pilotHref } from "./parts.js?v=a4518193";
-import { STATUS } from "./format.js?v=a4518193";
+// Разделы страницы гонки после итогов: откуда пилоты, команды, трасса, регламент гонки, спасибо.
+import { esc } from "./format.js?v=9c128947";
+import { plate, pilotHref } from "./parts.js?v=9c128947";
+import { STATUS } from "./format.js?v=9c128947";
 
 export function villagesOf(d) {
   const m = new Map();
@@ -42,6 +42,18 @@ function track(d) {
     + `</div></div></div></section>`;
 }
 
+function reglament(d) {
+  const g = d.rules;
+  if (!g) return "";
+  return `<section class="band band-line" id="reglament"><div class="wrap"><h2>Регламент гонки</h2>`
+    + `<p class="muted">${esc(g.name)}. ${esc(g.tape)}</p>`
+    + `<ul class="tapes">` + g.marks.map((m) => `<li><span class="tape tape-${esc(m.c)}" aria-hidden="true">${m.c === "kp" ? "КП" : ""}</span>`
+      + `<div><h3>${esc(m.h)}</h3><p>${esc(m.p)}</p></div></li>`).join("") + `</ul>`
+    + (g.classNote ? `<p class="note">${esc(g.classNote)}</p>` : "")
+    + `<div class="reg">` + g.items.map(([h, list]) => `<div><h3>${esc(h)}</h3><ul>${list.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div>`).join("") + `</div>`
+    + `</div></section>`;
+}
+
 function thanks(d) {
   const sp = d.sponsor;
   if (!sp && !d.organizer) return "";
@@ -55,4 +67,4 @@ function thanks(d) {
     + `</div></section>`;
 }
 
-export const moreSections = (d) => geo(d) + track(d) + thanks(d);
+export const moreSections = (d) => geo(d) + track(d) + reglament(d) + thanks(d);

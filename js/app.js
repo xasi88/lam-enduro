@@ -5,20 +5,20 @@
 // #/vs/<ключ>           выбор соперника    #/vs/<ключ>/<ключ2>  сравнение двух пилотов
 // #/settings            настройки          #/new                что нового
 // #/rules               регламент
-import { RACES, LEAGUE, classK } from "./races.js?v=a4518193";
-import { loadAll, loadRace } from "./data.js?v=a4518193";
-import { seasonTable, seasonsOf, leagueTable } from "./domain/season.js?v=a4518193";
-import { homeView } from "./ui/home.js?v=a4518193";
-import { raceView, bindRace } from "./ui/race.js?v=a4518193";
-import { seasonView } from "./ui/season.js?v=a4518193";
-import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=a4518193";
-import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=a4518193";
-import { pickView, compareView } from "./ui/skills.js?v=a4518193";
-import { rulesView } from "./ui/rules.js?v=a4518193";
-import { loading, failed } from "./ui/parts.js?v=a4518193";
-import { me, theme } from "./store.js?v=a4518193";
-import { install } from "./install.js?v=a4518193";
-import { watchMotion } from "./ui/motion.js?v=a4518193";
+import { RACES, LEAGUE, classK } from "./races.js?v=9c128947";
+import { loadAll, loadRace } from "./data.js?v=9c128947";
+import { seasonTable, seasonsOf, leagueTable } from "./domain/season.js?v=9c128947";
+import { homeView } from "./ui/home.js?v=9c128947";
+import { raceView, bindRace } from "./ui/race.js?v=9c128947";
+import { seasonView } from "./ui/season.js?v=9c128947";
+import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=9c128947";
+import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=9c128947";
+import { pickView, compareView } from "./ui/skills.js?v=9c128947";
+import { rulesView } from "./ui/rules.js?v=9c128947";
+import { loading, failed } from "./ui/parts.js?v=9c128947";
+import { me, theme } from "./store.js?v=9c128947";
+import { install } from "./install.js?v=9c128947";
+import { watchMotion } from "./ui/motion.js?v=9c128947";
 
 const app = document.getElementById("app");
 const html = document.documentElement;

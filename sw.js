@@ -1,6 +1,6 @@
-// Офлайн-работа приложения «Лам Эндуро». Файлы сайта: сначала сеть, без сети копия.
+// Офлайн-работа приложения «XASI ENDURO». Файлы сайта: сначала сеть, без сети копия.
 // Данные таблиц сюда не идут: у них своя копия в памяти телефона (js/data.js).
-const CACHE = "lam-enduro-v0.6.0";
+const CACHE = "xasi-enduro-v0.7.0";
 const CORE = ["./", "index.html", "manifest.webmanifest", "css/tokens.css", "css/base.css", "css/screens.css", "css/motion.css",
   "js/app.js", "js/data.js", "js/races.js", "js/store.js", "js/version.js", "js/install.js",
   "js/domain/parse.js", "js/domain/results.js", "js/domain/season.js", "js/domain/skills.js", "js/domain/compare.js",
@@ -12,7 +12,7 @@ self.addEventListener("install", (e) => {
 });
 
 self.addEventListener("activate", (e) => {
-  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k.startsWith("lam-enduro-") && k !== CACHE).map((k) => caches.delete(k))))
+  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => (k.startsWith("xasi-enduro-") || k.startsWith("lam-enduro-")) && k !== CACHE).map((k) => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
 

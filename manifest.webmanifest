@@ -1,7 +1,7 @@
 {
-  "id": "/lam-enduro/",
-  "name": "Лам Эндуро",
-  "short_name": "Лам Эндуро",
+  "id": "/xasi-enduro/",
+  "name": "XASI ENDURO",
+  "short_name": "XASI ENDURO",
   "description": "Итоги гонок эндуро, сезон и страница каждого пилота.",
   "start_url": "./",
   "scope": "./",

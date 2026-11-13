@@ -211,3 +211,20 @@
 .rule-n{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--panel-2);border:1px solid var(--line);font-size:15px;font-variant-numeric:tabular-nums;flex:none}
 .rule-list{margin:14px 0 0;padding-left:1.2em;display:grid;gap:8px}
 .rule-list li::marker{color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* Регламент гонки (js/ui/race-more.js#reglament). Образцы лент: цвет класса из tokens.css */
+.band-line{border-top:1px solid var(--line)}
+.tapes{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tapes li{display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 14px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);min-width:0}
+.tapes h3{font-family:var(--f-display);font-weight:800;letter-spacing:-.02em;font-size:17px;line-height:1.15}
+.tapes p{margin-top:2px;color:var(--muted);font-size:15px}
+.tape{flex:none;display:grid;place-items:center;width:52px;height:16px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.tape-common{background:var(--tape-common)}
+.tape-gold{background:var(--cls-gold)}.tape-silver{background:var(--cls-silver)}.tape-bronze{background:var(--cls-bronze)}
+.tape-danger{background:repeating-linear-gradient(135deg,#E5262B 0 8px,#FFFFFF 8px 16px)}
+.tape-corridor{background:transparent;border-block:4px solid var(--ink);box-shadow:none}
+.tape-kp{height:30px;width:52px;background:#FFFFFF;color:#0B0D12;border:2px solid #0B0D12;font-family:var(--f-display);font-weight:800;font-size:13px;box-shadow:none}
+.reg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 28px;margin-top:28px;max-width:860px}
+.reg h3{font-family:var(--f-display);font-weight:800;letter-spacing:-.02em;font-size:20px;line-height:1.15}
+.reg ul{margin:8px 0 0;padding-left:1.1em;display:grid;gap:6px}
+@media (max-width:640px){.tapes,.reg{grid-template-columns:minmax(0,1fr)}}

@@ -1,8 +1,8 @@
 // Страница гонки: шапка, итоги по классам, поиск внутри гонки. Остальные разделы: race-more.js
-import { esc, dur, plural, dateRu, timeNow, STATE } from "./format.js?v=a4518193";
-import { plate, row, podium, classTabs, others, ICON } from "./parts.js?v=a4518193";
-import { moreSections, villagesOf } from "./race-more.js?v=a4518193";
-import { pilotKey } from "../domain/parse.js?v=a4518193";
+import { esc, dur, plural, dateRu, timeNow, STATE } from "./format.js?v=9c128947";
+import { plate, row, podium, classTabs, others, ICON } from "./parts.js?v=9c128947";
+import { moreSections, villagesOf } from "./race-more.js?v=9c128947";
+import { pilotKey } from "../domain/parse.js?v=9c128947";
 
 const norm = (s) => pilotKey(s);
 

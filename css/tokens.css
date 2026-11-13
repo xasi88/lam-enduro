@@ -1,4 +1,4 @@
-/* Лам Эндуро: все цвета и шрифты. Вид «Спорт-трансляция» (2026-11-12). Описание: docs/Брендбук Лам Эндуро.md */
+/* XASI ENDURO: все цвета и шрифты. Вид «Спорт-трансляция» (2026-11-12). Описание: docs/Брендбук XASI ENDURO.md */
 :root{
   --bg:#0E1116; --panel:#161B22; --panel-2:#1C222B; --ink:#F2F4F7; --muted:#8B95A5; --line:#262D38;
   --contour:rgba(242,244,247,.035);
@@ -10,6 +10,7 @@
   --medal-1:#F2C230; --medal-2:#E4E9ED; --medal-3:#E39A63;
   --step:#1C222B;
   --side-a:var(--brand); --side-b:#4FC3F7;
+  --tape-common:#2F7CF6;
   --r:10px; --r-lg:14px;
   --f-display:"Manrope","Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
