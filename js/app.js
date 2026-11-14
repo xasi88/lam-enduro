@@ -5,20 +5,21 @@
 // #/vs/<ключ>           выбор соперника    #/vs/<ключ>/<ключ2>  сравнение двух пилотов
 // #/settings            настройки          #/new                что нового
 // #/rules               регламент
-import { RACES, LEAGUE, classK } from "./races.js?v=9c128947";
-import { loadAll, loadRace } from "./data.js?v=9c128947";
-import { seasonTable, seasonsOf, leagueTable } from "./domain/season.js?v=9c128947";
-import { homeView } from "./ui/home.js?v=9c128947";
-import { raceView, bindRace } from "./ui/race.js?v=9c128947";
-import { seasonView } from "./ui/season.js?v=9c128947";
-import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=9c128947";
-import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=9c128947";
-import { pickView, compareView } from "./ui/skills.js?v=9c128947";
-import { rulesView } from "./ui/rules.js?v=9c128947";
-import { loading, failed } from "./ui/parts.js?v=9c128947";
-import { me, theme } from "./store.js?v=9c128947";
-import { install } from "./install.js?v=9c128947";
-import { watchMotion } from "./ui/motion.js?v=9c128947";
+import { RACES, LEAGUE, classK } from "./races.js?v=959e4d2c";
+import { loadAll, loadRace, onFresh } from "./data.js?v=959e4d2c";
+import { seasonTable, seasonsOf, leagueTable } from "./domain/season.js?v=959e4d2c";
+import { homeView } from "./ui/home.js?v=959e4d2c";
+import { raceView, bindRace } from "./ui/race.js?v=959e4d2c";
+import { seasonView } from "./ui/season.js?v=959e4d2c";
+import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=959e4d2c";
+import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=959e4d2c";
+import { pickView, compareView } from "./ui/skills.js?v=959e4d2c";
+import { rulesView } from "./ui/rules.js?v=959e4d2c";
+import { loading, failed } from "./ui/parts.js?v=959e4d2c";
+import { me, theme } from "./store.js?v=959e4d2c";
+import { install } from "./install.js?v=959e4d2c";
+import { watchMotion } from "./ui/motion.js?v=959e4d2c";
+import { initFeedback } from "./ui/feedback.js?v=959e4d2c";
 
 const app = document.getElementById("app");
 const html = document.documentElement;
@@ -34,19 +35,21 @@ function setNav(tab) {
 
 function setTitle(t) { document.title = t ? `${t} · ${LEAGUE.name}` : LEAGUE.name; }
 
-async function route() {
+// soft: тихое обновление того же экрана (пришли свежие данные): без «Загружаем», место и поиск на месте.
+async function route(e, soft = false) {
   const my = ++ticket;
   clearInterval(timer); timer = null;
   const [, kind = "", a = "", b = ""] = location.hash.split("/").map(decodeURIComponent);
+  const keepY = window.scrollY, keepQ = app.querySelector("#q")?.value;
   html.removeAttribute("data-sponsor");
-  window.scrollTo(0, 0);
+  if (!soft) window.scrollTo(0, 0);
   try {
     if (kind === "g") {
       setNav("races");
       const race = RACES.find((r) => r.id === a);
       if (!race) return notFound();
       if (race.sponsor) html.setAttribute("data-sponsor", race.sponsor.id);
-      app.innerHTML = loading();
+      if (!soft) app.innerHTML = loading();
       const show = async (fresh) => {
         const d = await loadRace(race, { fresh });
         if (my !== ticket) return;
@@ -58,6 +61,7 @@ async function route() {
         if (d.state === "live" && !timer) timer = setInterval(() => document.visibilityState === "visible" && show(true).catch(() => {}), 60000);
       };
       await show(false);
+      if (soft) restore(my, keepY, keepQ);
       return;
     }
     if (kind === "settings") {
@@ -81,7 +85,7 @@ async function route() {
     }
     if (kind === "s" || kind === "p" || kind === "me" || kind === "vs" || kind === "") {
       setNav(kind === "s" ? "season" : kind === "" ? "races" : "me");
-      app.innerHTML = loading();
+      if (!soft) app.innerHTML = loading();
       const all = await loadAll(RACES);
       if (my !== ticket) return;
       if (all.every((d) => d.error)) throw new Error("Нет данных");
@@ -92,6 +96,7 @@ async function route() {
         const list = seasonRaces(all, year);
         app.innerHTML = seasonView({ season: seasonTable(list), league: leagueTable(list, classK), clsId: isYear ? b : a, year, years, raceCount: list.length });
         setTitle(`Сезон ${year}`);
+        if (soft) restore(my, keepY, keepQ);
         return;
       }
       const season = seasonTable(seasonRaces(all));
@@ -100,6 +105,7 @@ async function route() {
         if (!a) return notFound();
         if (b) { app.innerHTML = compareView(ok, season, a, b); setTitle("Сравнение"); }
         else { app.innerHTML = pickView(ok, a); bindPilots(app); setTitle("С кем сравнить"); }
+        if (soft) restore(my, keepY, keepQ);
         return;
       }
       const mine = me.get();
@@ -107,6 +113,7 @@ async function route() {
       if (key && (kind === "me" || kind === "p")) { app.innerHTML = pilotView(all.filter((d) => !d.error), season, key, key === mine); setTitle(key === mine ? "Мой профиль" : "Пилот"); }
       else if (kind === "p" || kind === "me") { app.innerHTML = pilotsView(season); bindPilots(app); setTitle("Профиль"); }
       else { app.innerHTML = homeView(all); setTitle("Гонки"); }
+      if (soft) restore(my, keepY, keepQ);
       return;
     }
     notFound();
@@ -115,6 +122,13 @@ async function route() {
     console.warn(err);
     app.innerHTML = failed();
   }
+}
+
+function restore(my, y, q) {
+  if (my !== ticket) return;
+  window.scrollTo(0, y);
+  const i = q && app.querySelector("#q");
+  if (i) { i.value = q; i.dispatchEvent(new Event("input")); }
 }
 
 function notFound() {
@@ -132,6 +146,8 @@ app.addEventListener("click", (e) => {
   if (j) { e.preventDefault(); document.getElementById(j.dataset.jump)?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
 });
 window.addEventListener("hashchange", route);
+onFresh(() => { if (!document.querySelector(".fb-sheet")) route(null, true); });
 watchMotion(app);
 install.onChange(() => { if (location.hash === "#/settings") route(); });
+initFeedback();
 route();

@@ -16,13 +16,37 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="css/tokens.css?v=9c128947">
-<link rel="stylesheet" href="css/base.css?v=9c128947">
-<link rel="stylesheet" href="css/screens.css?v=9c128947">
-<link rel="stylesheet" href="css/motion.css?v=9c128947">
+<link rel="preload" as="style" crossorigin href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Golos+Text:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" crossorigin href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Golos+Text:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="css/tokens.css?v=959e4d2c">
+<link rel="stylesheet" href="css/base.css?v=959e4d2c">
+<link rel="stylesheet" href="css/screens.css?v=959e4d2c">
+<link rel="stylesheet" href="css/motion.css?v=959e4d2c">
 <script>try{var t=localStorage.getItem("lam-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<script type="module" src="js/app.js?v=9c128947"></script>
+<script type="module" src="js/app.js?v=959e4d2c"></script>
+<!-- Все модули сразу, а не цепочкой по import. Новый файл js: строка здесь и в sw.js (проверка в tests/domain.test.mjs). -->
+<link rel="modulepreload" href="js/races.js?v=959e4d2c">
+<link rel="modulepreload" href="js/data.js?v=959e4d2c">
+<link rel="modulepreload" href="js/store.js?v=959e4d2c">
+<link rel="modulepreload" href="js/install.js?v=959e4d2c">
+<link rel="modulepreload" href="js/domain/parse.js?v=959e4d2c">
+<link rel="modulepreload" href="js/domain/results.js?v=959e4d2c">
+<link rel="modulepreload" href="js/domain/season.js?v=959e4d2c">
+<link rel="modulepreload" href="js/domain/skills.js?v=959e4d2c">
+<link rel="modulepreload" href="js/domain/compare.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/format.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/parts.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/home.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/pilots.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/race.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/race-more.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/season.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/settings.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/skills.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/rules.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/motion.js?v=959e4d2c">
+<link rel="modulepreload" href="js/ui/feedback.js?v=959e4d2c">
+<link rel="modulepreload" href="js/version.js?v=959e4d2c">
 </head>
 <body>
 <a class="skip" href="#app">К содержимому</a>
