@@ -1,8 +1,8 @@
 // Раздел «Сезон»: выбор сезона, класс, подиум по очкам, таблица остальных.
-import { esc, plural } from "./format.js?v=959e4d2c";
-import { classTabs, pilotHref } from "./parts.js?v=959e4d2c";
-import { POINTS } from "../domain/results.js?v=959e4d2c";
-import { CLASSES } from "../races.js?v=959e4d2c";
+import { esc, plural } from "./format.js?v=e7a2151d";
+import { classTabs, pilotHref } from "./parts.js?v=e7a2151d";
+import { POINTS } from "../domain/results.js?v=e7a2151d";
+import { CLASSES } from "../races.js?v=e7a2151d";
 
 export const LEAGUE_TAB = "league";
 const kText = () => CLASSES.map((c) => `${c.name} ×${String(c.k / 10).replace(".", ",")}`).join(", ");

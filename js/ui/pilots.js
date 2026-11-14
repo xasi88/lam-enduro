@@ -1,13 +1,13 @@
 // Раздел «Профиль»: пилот находит себя и закрепляет. Страница одного пилота.
-import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=959e4d2c";
-import { plate, pilotHref, ICON } from "./parts.js?v=959e4d2c";
-import { pilotKey } from "../domain/parse.js?v=959e4d2c";
-import { pilotHistory, pilotStats } from "../domain/season.js?v=959e4d2c";
-import { LEAGUE } from "../races.js?v=959e4d2c";
-import { skillsBlock } from "./skills.js?v=959e4d2c";
+import { esc, dur, dateRu, plural, STATUS } from "./format.js?v=e7a2151d";
+import { plate, pilotHref, ICON } from "./parts.js?v=e7a2151d";
+import { pilotKey } from "../domain/parse.js?v=e7a2151d";
+import { pilotHistory, pilotStats } from "../domain/season.js?v=e7a2151d";
+import { LEAGUE } from "../races.js?v=e7a2151d";
+import { skillsBlock } from "./skills.js?v=e7a2151d";
 
 /** Все пилоты сезона: у каждого класс, где больше очков. Экран делит их на группы по классам. */
-function everyone(season) {
+export function everyone(season) {
   const m = new Map();
   for (const c of season) for (const p of c.pilots) {
     const cur = m.get(p.key);
@@ -76,6 +76,7 @@ export function pilotView(races, season, key, mine) {
     + statCards(rows)
     + `<div class="cta">${mine ? "" : `<button class="btn btn-fire" type="button" data-pin="${esc(key)}" data-name="${esc(r0.name)}">${ICON.user}Это я</button>`}`
     + `<a class="btn ${mine ? "btn-fire" : "btn-ghost"}" href="${share}" target="_blank" rel="noopener">${ICON.share}Поделиться в WhatsApp</a>`
+    + `<button class="btn btn-ghost" type="button" data-card="${esc(key)}">${ICON.image}Картинка результата</button>`
     + `${mine ? `<button class="btn btn-ghost" type="button" data-unpin>Сменить пилота</button>` : ""}</div></div></header>`
     + skillsBlock(races, key)
     + `<section class="band"><div class="wrap"><h2>Гонки</h2><ol class="proto hist">`

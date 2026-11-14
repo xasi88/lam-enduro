@@ -1,42 +1,36 @@
-/* XASI ENDURO: все цвета и шрифты. Вид «Спорт-трансляция» (2026-11-12). Описание: docs/Брендбук XASI ENDURO.md */
+/* XASI ENDURO: все цвета и шрифты. Вид «Афиша» (выбор автора 2026-11-14): светлый фон цвета бумаги,
+   чёрный текст, оранжевые блоки. Светлая тема главная, тёмная включается в настройках.
+   Описание: docs/Брендбук XASI ENDURO.md */
 :root{
-  --bg:#0E1116; --panel:#161B22; --panel-2:#1C222B; --ink:#F2F4F7; --muted:#8B95A5; --line:#262D38;
-  --contour:rgba(242,244,247,.035);
-  --fire:#F2F4F7; --fire-ink:#0E1116; --fire-2:#C9D1DC;
+  --bg:#F3EEE4; --panel:#FFFFFF; --panel-2:#EAE3D5; --ink:#15120E; --muted:#6E665B; --line:#DDD4C4;
+  --contour:rgba(21,18,14,.045);
+  --fire:#FF5A1F; --fire-ink:#15120E; --fire-2:#B93A08;
   --brand:#FF5A1F;
-  --warn-bg:#3A2E0C; --warn-ink:#F5D47C; --live:#2FD27A;
-  --gold:#F2C230; --silver:#C9D1D8; --bronze:#E39A63;
+  --warn-bg:#FFE9A8; --warn-ink:#5C4300; --live:#0B8A4A;
+  --gold:#9A6F00; --silver:#5F6A74; --bronze:#94511F;
   --cls-gold:#FF2D2D; --cls-silver:#22C55E; --cls-bronze:#FACC15; --plate-ink:#0B0D12;
   --medal-1:#F2C230; --medal-2:#E4E9ED; --medal-3:#E39A63;
-  --step:#1C222B;
-  --side-a:var(--brand); --side-b:#4FC3F7;
+  --step:#15120E;
+  --side-a:var(--brand); --side-b:#1565C0;
   --tape-common:#2F7CF6;
   --r:10px; --r-lg:14px;
   --f-display:"Manrope","Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  color-scheme:dark;
+  color-scheme:light;
 }
-@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
-  --bg:#F4F5F7; --panel:#FFFFFF; --panel-2:#EEF0F3; --ink:#0B0D12; --muted:#5B6472; --line:#E1E4EA;
-  --contour:rgba(11,13,18,.04);
-  --fire:#0B0D12; --fire-ink:#FFFFFF; --fire-2:#3A414C;
-  --brand:#E0480F;
-  --warn-bg:#FFF0C2; --warn-ink:#644800; --live:#0F8A4C;
-  --gold:#9A6F00; --silver:#5F6A74; --bronze:#94511F;
-  --step:#0B0D12; --side-b:#1565C0; color-scheme:light}}
-:root[data-theme="light"]{
-  --bg:#F4F5F7; --panel:#FFFFFF; --panel-2:#EEF0F3; --ink:#0B0D12; --muted:#5B6472; --line:#E1E4EA;
-  --contour:rgba(11,13,18,.04);
-  --fire:#0B0D12; --fire-ink:#FFFFFF; --fire-2:#3A414C;
-  --brand:#E0480F;
-  --warn-bg:#FFF0C2; --warn-ink:#644800; --live:#0F8A4C;
-  --gold:#9A6F00; --silver:#5F6A74; --bronze:#94511F;
-  --step:#0B0D12; --side-b:#1565C0; color-scheme:light}
+:root[data-theme="dark"]{
+  --bg:#15120E; --panel:#211C16; --panel-2:#2B251D; --ink:#F3EEE4; --muted:#A39A8C; --line:#3A3228;
+  --contour:rgba(243,238,228,.04);
+  --fire:#FF5A1F; --fire-ink:#15120E; --fire-2:#FF8A5C;
+  --warn-bg:#3A2E0C; --warn-ink:#F5D47C; --live:#2FD27A;
+  --gold:#F2C230; --silver:#C9D1D8; --bronze:#E39A63;
+  --step:#2B251D; --side-b:#4FC3F7; color-scheme:dark}
 
-/* Стиль гонки под спонсора: только акцент, фон и панель. Тёмный вид всегда. */
-[data-sponsor="bekoil"]{
+/* Стиль гонки под спонсора: только акцент, фон и панель. Тёмный вид всегда, и в светлой теме сайта:
+   :root в начале нужен, чтобы правило было сильнее светлой темы на <html>. */
+:root[data-sponsor="bekoil"],[data-sponsor="bekoil"]{
   --bg:#0D1450; --panel:#16207A; --ink:#FFFFFF; --muted:#B9C4F0; --line:#2A3796;
   --contour:rgba(140,240,255,.07);
   --fire:#2F9BFF; --fire-ink:#FFFFFF; --fire-2:#8CF0FF;
   --gold:#E9BE48; --silver:#BEC8D0; --bronze:#DE9764;
-  --step:#1B2FA8; --panel-2:#1B278C; --brand:#2F9BFF; color-scheme:dark}
+  --step:#1B2FA8; --panel-2:#1B278C; --brand:#2F9BFF; --live:#2FD27A; --warn-bg:#3A2E0C; --warn-ink:#F5D47C; --side-b:#4FC3F7; color-scheme:dark}

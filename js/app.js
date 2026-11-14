@@ -5,25 +5,26 @@
 // #/vs/<ключ>           выбор соперника    #/vs/<ключ>/<ключ2>  сравнение двух пилотов
 // #/settings            настройки          #/new                что нового
 // #/rules               регламент
-import { RACES, LEAGUE, classK } from "./races.js?v=959e4d2c";
-import { loadAll, loadRace, onFresh } from "./data.js?v=959e4d2c";
-import { seasonTable, seasonsOf, leagueTable } from "./domain/season.js?v=959e4d2c";
-import { homeView } from "./ui/home.js?v=959e4d2c";
-import { raceView, bindRace } from "./ui/race.js?v=959e4d2c";
-import { seasonView } from "./ui/season.js?v=959e4d2c";
-import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=959e4d2c";
-import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=959e4d2c";
-import { pickView, compareView } from "./ui/skills.js?v=959e4d2c";
-import { rulesView } from "./ui/rules.js?v=959e4d2c";
-import { loading, failed } from "./ui/parts.js?v=959e4d2c";
-import { me, theme } from "./store.js?v=959e4d2c";
-import { install } from "./install.js?v=959e4d2c";
-import { watchMotion } from "./ui/motion.js?v=959e4d2c";
-import { initFeedback } from "./ui/feedback.js?v=959e4d2c";
+import { RACES, LEAGUE, classK } from "./races.js?v=e7a2151d";
+import { loadAll, loadRace, onFresh } from "./data.js?v=e7a2151d";
+import { seasonTable, seasonsOf, leagueTable, pilotHistory } from "./domain/season.js?v=e7a2151d";
+import { homeView, bindHome } from "./ui/home.js?v=e7a2151d";
+import { openCard } from "./ui/card.js?v=e7a2151d";
+import { raceView, bindRace } from "./ui/race.js?v=e7a2151d";
+import { seasonView } from "./ui/season.js?v=e7a2151d";
+import { pilotsView, bindPilots, pilotView } from "./ui/pilots.js?v=e7a2151d";
+import { settingsView, newsView, bindSettings } from "./ui/settings.js?v=e7a2151d";
+import { pickView, compareView } from "./ui/skills.js?v=e7a2151d";
+import { rulesView } from "./ui/rules.js?v=e7a2151d";
+import { loading, failed } from "./ui/parts.js?v=e7a2151d";
+import { me, theme } from "./store.js?v=e7a2151d";
+import { install } from "./install.js?v=e7a2151d";
+import { watchMotion } from "./ui/motion.js?v=e7a2151d";
+import { initFeedback } from "./ui/feedback.js?v=e7a2151d";
 
 const app = document.getElementById("app");
 const html = document.documentElement;
-let timer = null, ticket = 0;
+let timer = null, ticket = 0, loaded = [];
 
 const seasonRaces = (all, year = LEAGUE.season) => all.filter((d) => !d.error && d.season === year);
 
@@ -89,6 +90,7 @@ async function route(e, soft = false) {
       const all = await loadAll(RACES);
       if (my !== ticket) return;
       if (all.every((d) => d.error)) throw new Error("Нет данных");
+      loaded = all.filter((d) => !d.error);
       if (kind === "s") {
         const years = seasonsOf(RACES, LEAGUE.season);
         const isYear = /^\d{4}$/.test(a);
@@ -112,7 +114,7 @@ async function route(e, soft = false) {
       const key = kind === "me" ? mine : a;
       if (key && (kind === "me" || kind === "p")) { app.innerHTML = pilotView(all.filter((d) => !d.error), season, key, key === mine); setTitle(key === mine ? "Мой профиль" : "Пилот"); }
       else if (kind === "p" || kind === "me") { app.innerHTML = pilotsView(season); bindPilots(app); setTitle("Профиль"); }
-      else { app.innerHTML = homeView(all); setTitle("Гонки"); }
+      else { app.innerHTML = homeView(all, season, mine); bindHome(app, season); setTitle("Гонки"); }
       if (soft) restore(my, keepY, keepQ);
       return;
     }
@@ -142,6 +144,20 @@ app.addEventListener("click", (e) => {
   if (e.target.closest("[data-unpin]")) { me.set(null); route(); return; }
   const th = e.target.closest("[data-theme-set]");
   if (th) { theme.set(th.dataset.themeSet); route(); return; }
+  const more = e.target.closest("[data-more]");
+  if (more) {
+    const open = more.getAttribute("aria-expanded") !== "true";
+    more.setAttribute("aria-expanded", String(open));
+    more.closest(".row").querySelector(".r-more").hidden = !open;
+    return;
+  }
+  const card = e.target.closest("[data-card]");
+  if (card) {
+    const rows = pilotHistory(loaded, card.dataset.card).sort((a, b) => b.race.date.localeCompare(a.race.date));
+    const pick = rows.find((x) => x.rider.place) || rows[0];
+    if (pick) openCard(pick, card);
+    return;
+  }
   const j = e.target.closest("[data-jump]");
   if (j) { e.preventDefault(); document.getElementById(j.dataset.jump)?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
 });

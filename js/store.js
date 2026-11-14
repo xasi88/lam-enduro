@@ -8,12 +8,13 @@ export const me = {
   set(key, name) { set("lam-me", key); set("lam-me-name", key ? name : null); },
 };
 
-export const THEMES = [["auto", "Как на телефоне"], ["dark", "Тёмная"], ["light", "Светлая"]];
+// Светлая «Афиша» главная. Тёмную человек включает сам, телефон её не навязывает (2026-11-14).
+export const THEMES = [["light", "Светлая"], ["dark", "Тёмная"]];
 export const theme = {
-  get: () => get("lam-theme") || "auto",
+  get: () => (get("lam-theme") === "dark" ? "dark" : "light"),
   set(v) {
-    set("lam-theme", v === "auto" ? null : v);
-    if (v === "auto") document.documentElement.removeAttribute("data-theme");
-    else document.documentElement.setAttribute("data-theme", v);
+    set("lam-theme", v === "dark" ? "dark" : null);
+    if (v === "dark") document.documentElement.setAttribute("data-theme", "dark");
+    else document.documentElement.removeAttribute("data-theme");
   },
 };

@@ -72,7 +72,7 @@ h1 .q{color:var(--brand)}
 .search input{width:100%;height:54px;padding:0 14px 0 44px;border-radius:var(--r);border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:17px}
 .search input:focus{border-color:var(--ink);outline:none}
 .found-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;margin:24px 0 8px;max-width:760px}
-.link-btn{display:inline-flex;align-items:center;min-height:44px;background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--fire);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.link-btn{display:inline-flex;align-items:center;min-height:44px;background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-color:var(--fire);text-decoration-thickness:2px;text-underline-offset:4px}
 
 /* Пьедестал */
 .podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end;max-width:760px;margin-top:32px}
@@ -92,19 +92,27 @@ h1 .q{color:var(--brand)}
 /* Протокол */
 .proto-title{margin-top:40px;font-size:20px}
 .proto{list-style:none;margin:12px 0 0;padding:0;border-top:1px solid var(--line);max-width:860px}
-.row{display:grid;grid-template-columns:2.2em auto minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line)}
+.row{display:grid;grid-template-columns:2em auto minmax(0,1fr) auto;gap:0 10px;align-items:center;min-height:56px;padding:6px 2px;border-bottom:1px solid var(--line)}
 .r-place{font-family:var(--f-display);font-weight:800;font-size:19px;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
 .r-place.m1{color:var(--gold)}.r-place.m2{color:var(--silver)}.r-place.m3{color:var(--bronze)}
-.r-who{min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}
+.r-who{position:relative;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:1px}
+.row a.r-name::after{content:"";position:absolute;inset:-6px 0}
 .r-name{font-weight:600;font-size:16px;line-height:1.3;text-decoration:none}
 a.r-name:hover{text-decoration:underline}
-.r-from{font-size:14px;color:var(--muted)}
+.r-from{max-width:100%;font-size:13px;line-height:1.35;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .r-clock{grid-column:3/-1;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 .tag{display:inline-block;font-size:12px;font-weight:600;line-height:1.2;padding:3px 7px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
-.tag-warn{background:var(--warn-bg);color:var(--warn-ink);border-color:transparent}
-.r-time{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;display:flex;flex-direction:column}
-.r-time b{font-size:17px;font-weight:700}
-.r-gap{font-size:13px;color:var(--muted)}
+.tag-warn{background:var(--warn-bg);color:var(--warn-ink);border-color:transparent;margin-top:3px}
+.r-time{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;display:flex;flex-direction:column;align-items:flex-end;justify-content:center}
+button.r-time{min-height:44px;margin:0;padding:0 0 0 6px;border:0;background:none;color:inherit;font:inherit;font-variant-numeric:tabular-nums;cursor:pointer;border-radius:6px}
+.r-time b{font-size:17px;font-weight:700;line-height:1.3}
+.r-gap{font-size:13px;line-height:1.3;color:var(--muted)}
+button.r-time .r-gap::after{content:"";display:inline-block;width:6px;height:6px;margin-left:7px;border-right:1.5px solid;border-bottom:1.5px solid;transform:translateY(-3px) rotate(45deg);transition:transform .2s ease}
+button.r-time[aria-expanded="true"] .r-gap::after{transform:translateY(1px) rotate(225deg)}
+.r-more{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 24px;margin:6px 0 4px;padding:10px 14px;border-radius:8px;background:var(--panel);border:1px solid var(--line)}
+.r-more div{display:flex;flex-direction:column}
+.r-more dt{font-size:12px;color:var(--muted);line-height:1.3}
+.r-more dd{margin:0;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
 .r-pts{font-size:13px;font-weight:700;color:var(--fire-2)}
 .r-status{font-size:14px;font-weight:700;color:var(--muted)}
 .s-track{color:var(--live)}
@@ -120,3 +128,6 @@ a.r-name:hover{text-decoration:underline}
 .grp .row:last-child{border-bottom:0}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+
+/* Знак «Табличка» в шапке: табличка цветом бренда, буква X цветом текста на кнопке */
+.brand-mark .bm-x{fill:none;stroke:var(--fire-ink);stroke-width:4;stroke-linecap:butt}

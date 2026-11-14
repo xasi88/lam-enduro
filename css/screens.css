@@ -156,7 +156,7 @@
 
 /* Стороны пилота: паутинка (js/ui/skills.js) */
 .sk-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
-.sk-badge{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border-radius:6px;background:var(--brand);color:#fff;font-weight:700;font-size:14px}
+.sk-badge{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border-radius:6px;background:var(--brand);color:var(--fire-ink);font-weight:700;font-size:14px}
 .sk-body{display:grid;gap:20px;margin-top:18px}
 @media (min-width:860px){.sk-body,.vs-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center}}
 .sk-fig{max-width:460px;width:100%;margin-inline:auto}

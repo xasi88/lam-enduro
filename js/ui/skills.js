@@ -1,11 +1,11 @@
 // Паутинка сторон пилота и экран сравнения двух пилотов. Расчёт: js/domain/skills.js
-import { esc, dateRu, dur, plural, STATUS } from "./format.js?v=959e4d2c";
-import { ICON } from "./parts.js?v=959e4d2c";
-import { pilotKey } from "../domain/parse.js?v=959e4d2c";
-import { SIDES, classSkills, pilotSkills, headToHead } from "../domain/skills.js?v=959e4d2c";
-import { LEAGUE, CLASSES, classK } from "../races.js?v=959e4d2c";
-import { FACT_GROUPS, pilotFacts, factWinner, tally } from "../domain/compare.js?v=959e4d2c";
-import { leagueTable } from "../domain/season.js?v=959e4d2c";
+import { esc, dateRu, dur, plural, STATUS } from "./format.js?v=e7a2151d";
+import { ICON } from "./parts.js?v=e7a2151d";
+import { pilotKey } from "../domain/parse.js?v=e7a2151d";
+import { SIDES, classSkills, pilotSkills, headToHead } from "../domain/skills.js?v=e7a2151d";
+import { LEAGUE, CLASSES, classK } from "../races.js?v=e7a2151d";
+import { FACT_GROUPS, pilotFacts, factWinner, tally } from "../domain/compare.js?v=e7a2151d";
+import { leagueTable } from "../domain/season.js?v=e7a2151d";
 
 const W = 340, H = 300, CX = 170, CY = 150, R = 84;
 const pt = (i, f) => {

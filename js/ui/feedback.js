@@ -3,9 +3,9 @@
 // Телефон: «Поделиться» отдаёт снимок и текст вместе, человек выбирает WhatsApp и чат автора.
 // Компьютер или старый браузер: снимок скачивается, чат автора открывается с готовым текстом.
 // Библиотека снимка (js/vendor/modern-screenshot.js) грузится только по нажатию.
-import { VERSION } from "../version.js?v=959e4d2c";
-import { me } from "../store.js?v=959e4d2c";
-import { esc } from "./format.js?v=959e4d2c";
+import { VERSION } from "../version.js?v=e7a2151d";
+import { me } from "../store.js?v=e7a2151d";
+import { esc } from "./format.js?v=e7a2151d";
 
 export const WHATSAPP = "79659696053"; // Хаси Абдуллах, номер из Контакты.md
 const DRAFT = "xe-fb-draft";
@@ -36,8 +36,7 @@ export function deviceOf(ua) {
 }
 
 function facts() {
-  const dark = document.documentElement.dataset.theme === "dark"
-    || (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
+  const dark = document.documentElement.dataset.theme === "dark";
   const app = matchMedia("(display-mode: standalone)").matches || navigator.standalone ? "приложение" : "браузер";
   const net = navigator.connection?.effectiveType;
   const now = new Date();
@@ -68,7 +67,7 @@ export function message(kind, text, f) {
 
 /** Снимок видимой части экрана, без кнопки и окна замечания. */
 async function shot() {
-  const { domToBlob } = await import("../vendor/modern-screenshot.js?v=959e4d2c");
+  const { domToBlob } = await import("../vendor/modern-screenshot.js?v=e7a2151d");
   const bg = getComputedStyle(document.body).backgroundColor;
   // Ленивые картинки ниже экрана не грузятся, а библиотека ждёт каждую: грузим сразу.
   document.querySelectorAll('img[loading="lazy"]').forEach((i) => { i.loading = "eager"; });
